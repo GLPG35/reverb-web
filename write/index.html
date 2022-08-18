@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A relaxing note-taking app">
+    <title>reverb - Start writing your own notes!</title>
+    <link rel="icon" href="../images/reverb_icon.png">
+    <link rel="stylesheet" href="../fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="../css/write.css">
+</head>
+<body>
+    <div class="mainContainer">
+        <div class="sidebar">
+            <div class="menu">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="files" title="List Notes">
+                <i class="fas fa-folder"></i>
+            </div>
+            <div class="add" title="Add Note">
+                <i class="fas fa-circle-plus"></i>
+            </div>
+            <div class="config" title="Settings">
+                <i class="fas fa-gear"></i>
+            </div>
+        </div>
+        <div class="container1">
+            <header>
+                <div class="tabs">
+                    <div class="welcomeTab active" title="Welcome to reverb!">
+                        <div class="icon">
+                            <i class="far fa-file"></i>
+                        </div>
+                        <div class="title">
+                            Welcome to reverb!
+                        </div>
+                        <div class="close">
+                            <i class="fas fa-times"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="addTab">
+                    <i class="fas fa-plus"></i>
+                </div>
+                <div class="themeSwitcher">
+                    <input type="checkbox" id="switch" class="inputToggle">
+                    <div class="toggle">
+                        <label for="switch"></label>
+                        <div class="circle"></div>
+                        <div class="sun">
+                            <svg data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+                                <defs>
+                                    <style>.sun-1{fill:none;stroke-miterlimit:10;stroke:#3874b1;}.sun-1,.sun-2{stroke:#3874b1;stroke-width:47.03096px;}.sun-2{fill:transparent;stroke-linecap:round;stroke-linejoin:round;}</style>
+                                </defs>
+                                <circle class="sun-1" cx="250" cy="250" r="111.3909"/>
+                                <line class="sun-2" x1="190.39782" y1="36.76471" x2="197.2231" y2="61.18313"/>
+                                <line class="sun-2" x1="358.63502" y1="57.07477" x2="346.19479" y2="79.16741"/>
+                                <line class="sun-2" x1="463.23529" y1="190.39782" x2="438.81687" y2="197.2231"/>
+                                <line class="sun-2" x1="442.92523" y1="358.63502" x2="420.83259" y2="346.19479"/>
+                                <line class="sun-2" x1="309.60218" y1="463.23529" x2="302.7769" y2="438.81687"/>
+                                <line class="sun-2" x1="141.36498" y1="442.92523" x2="153.80521" y2="420.83259"/>
+                                <line class="sun-2" x1="36.76471" y1="309.60218" x2="61.18313" y2="302.7769"/>
+                                <line class="sun-2" x1="57.07477" y1="141.36498" x2="79.16741" y2="153.80521"/>
+                            </svg>
+                        </div>
+                        <div class="moon">
+                            <svg data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+                                <defs>
+                                    <style>.moon{fill:none;stroke:#80cedb;stroke-linecap:round;stroke-linejoin:round;stroke-width:47.03096px;}</style>
+                                </defs>
+                                <path class="moon" d="M427.725,338.86a188.77651,188.77651,0,0,1-166.63,99.96c-104.28,0-188.82-84.54-188.82-188.82,0-103.24,82.86-187.13,185.71-188.79A187.98227,187.98227,0,0,0,235.805,150.07c0,104.28,84.54,188.82,188.82,188.82C425.665,338.89,426.695,338.88,427.725,338.86Z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <div class="document hasPreview">
+                <div class="welcome">
+                    <textarea class="textarea"></textarea>
+                </div>
+                <div class="preview">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/modules/themeSwitcher.js"></script>
+    <script src="../js/write.js"></script>
+</body>
+</html>

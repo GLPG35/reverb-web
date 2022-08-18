@@ -1,0 +1,39 @@
+@import 'header';
+
+.container1 {
+    width: 100%;
+    height: calc(100vh - 4em);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1em;
+
+    .title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 4em;
+
+        h1 {
+            font-weight: 900;
+
+            span {
+                position: relative;
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    width: 100%;
+                    height: 4px;
+                    border-radius: 50vh;
+                    background: linear-gradient(135deg, #3874b1, #80cedb);
+                }
+            }
+        }
+
+        h2 {
+            font-weight: 300;
+        }
+    }
+}
