@@ -6,8 +6,9 @@ const rDocument = document.querySelector('.document')
 const viewFiles = document.querySelector('.files')
 const folder = document.querySelector('.folder')
 const noWelcome = localStorage.getItem('noWelcome') ? localStorage.getItem('noWelcome') : false
-const notesList = localStorage.getItem('notes') ? JSON.parse(localStorage.getItem('notes'))
-    : [] && localStorage.setItem('notes', JSON.stringify([]))
+const notesList = localStorage.getItem('notes') ? JSON.parse(localStorage.getItem('notes')) : []
+
+if (!localStorage.getItem('notes')) localStorage.setItem('notes', JSON.stringify([]))
 
 if (!notesList.length) {
     document.querySelector('.folder .list').insertAdjacentHTML('afterend',
