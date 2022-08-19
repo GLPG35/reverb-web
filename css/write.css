@@ -6,6 +6,9 @@
   --accent-color-hover: #104171;
   --sidebar-bg: #c2e3e9;
   --close-bg: #b9e1e5;
+  --folders-bg: #edfcff;
+  --folders-bg-hover: #b7d6dc;
+  --folders-color: #95d2dd;
   --blockquote-bg: #3874b130;
   --divisor-color: #3874b130;
 }
@@ -17,6 +20,9 @@
   --accent-color-hover: #2293a7;
   --sidebar-bg: #191929;
   --close-bg: #4f4f6a;
+  --folders-bg: #202032;
+  --folders-bg-hover: #28283e;
+  --folders-color: #383852;
   --blockquote-bg: #80cedb30;
   --divisor-color: #80cedb30;
 }
@@ -49,6 +55,7 @@ body {
   height: 100vh;
   display: flex;
   justify-content: flex-start;
+  position: relative;
 }
 .mainContainer .sidebar {
   width: 4em;
@@ -59,6 +66,7 @@ body {
   align-items: center;
   gap: 0.5em;
   padding-block: 1em;
+  z-index: 11;
 }
 .mainContainer .sidebar div {
   padding: 0.5em;
@@ -76,6 +84,66 @@ body {
 }
 .mainContainer .sidebar .config {
   margin-top: auto;
+}
+.mainContainer .folder {
+  width: 15em;
+  height: 100%;
+  background-color: var(--folders-bg);
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 4em;
+  border-radius: 0 15px 15px 0;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  color: var(--accent-color);
+}
+.mainContainer .folder.active {
+  transform: translate(0);
+}
+.mainContainer .folder .title {
+  font-size: 1.5em;
+  font-weight: 800;
+  width: 100%;
+  height: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.mainContainer .folder .noNotes {
+  width: 70%;
+  height: calc(100% - 5em);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.5em;
+  color: var(--folders-color);
+}
+.mainContainer .folder .noNotes i {
+  font-size: 3em;
+}
+.mainContainer .folder .noNotes span {
+  text-align: center;
+  font-weight: 600;
+}
+.mainContainer .folder .newNote {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 3em;
+  margin-top: auto;
+  gap: 0.5em;
+  transition: 0.2s ease-out;
+}
+.mainContainer .folder .newNote:hover {
+  cursor: pointer;
+  background-color: var(--folders-bg-hover);
 }
 .mainContainer .container1 {
   width: calc(100% - 4em);
@@ -225,20 +293,48 @@ body {
   display: flex;
   position: relative;
 }
-.mainContainer .container1 .document.hasPreview::before {
+.mainContainer .container1 .document::before {
   content: "";
   position: absolute;
   height: 95%;
   width: 2px;
   left: 50%;
   background-color: var(--divisor-color);
+  opacity: 0;
+  visibility: hidden;
 }
-.mainContainer .container1 .document .welcome {
-  flex-grow: 1;
+.mainContainer .container1 .document .toggleView {
+  position: absolute;
+  bottom: 1em;
+  right: 1em;
+  width: 3em;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  border: none;
+  outline: none;
+  background-color: var(--accent-color);
+  color: var(--bg-color);
+  transition: 0.2s ease-out;
+}
+.mainContainer .container1 .document .toggleView:hover {
+  cursor: pointer;
+  background-color: var(--accent-color-hover);
+}
+.mainContainer .container1 .document.active::before {
+  opacity: 1;
+  visibility: visible;
+}
+.mainContainer .container1 .document.active .edit {
+  display: initial;
+}
+.mainContainer .container1 .document .edit {
+  min-width: 50%;
+  max-width: 50%;
   height: 100%;
   padding: 1em;
+  display: none;
 }
-.mainContainer .container1 .document .welcome textarea {
+.mainContainer .container1 .document .edit textarea {
   width: 100%;
   height: 100%;
   background-color: transparent;
@@ -252,7 +348,7 @@ body {
   overflow-y: auto;
 }
 .mainContainer .container1 .document .preview {
-  width: 50%;
+  flex-grow: 1;
   height: 100%;
   padding: 1em;
   overflow-y: auto;

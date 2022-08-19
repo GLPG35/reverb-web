@@ -1,5 +1,22 @@
 const textarea = document.querySelector('.document .textarea')
 const preview = document.querySelector('.preview')
+const toggleViewButton = document.querySelector('.toggleView')
+const toggleViewIcon = document.querySelector('.toggleView i')
+const rDocument = document.querySelector('.document')
+const viewFiles = document.querySelector('.files')
+const folder = document.querySelector('.folder')
+const noWelcome = localStorage.getItem('noWelcome') ? localStorage.getItem('noWelcome') : false
+const notesList = localStorage.getItem('notes') ? JSON.parse(localStorage.getItem('notes'))
+    : [] && localStorage.setItem('notes', JSON.stringify([]))
+
+if (!notesList.length) {
+    document.querySelector('.folder .list').insertAdjacentHTML('afterend',
+        `<div class="noNotes">
+            <i class="fas fa-file-circle-xmark"></i>
+            <span>You don't have any notes yet!</span>
+        </div>`
+    )
+}
 
 const keyWords = [
     {
@@ -185,6 +202,28 @@ const previewText = (text) => {
     preview.innerHTML = parsedText
 }
 
+const toggleView = () => {
+    rDocument.classList.toggle('active')
+
+    if (!rDocument.classList.contains('active')) {
+        toggleViewIcon.classList.remove('fa-pen')
+        toggleViewIcon.classList.add('fa-floppy-disk')
+    } else {
+        toggleViewIcon.classList.remove('fa-floppy-disk')
+        toggleViewIcon.classList.add('fa-pen')
+    }
+}
+
+const viewFolder = () => {
+    folder.classList.toggle('active')
+}
+
+const closeFolder = () => {
+    if (folder.classList.contains('active')) {
+        folder.classList.toggle('active')
+    }
+}
+
 fetch('../js/resources/welcomeText').then(res => res.text())
 .then(text => {
     textarea.value = text
@@ -192,4 +231,7 @@ fetch('../js/resources/welcomeText').then(res => res.text())
 })
 
 document.addEventListener('keydown', saveDocument)
+toggleViewButton.addEventListener('click', toggleView)
+viewFiles.addEventListener('click', viewFolder)
+rDocument.addEventListener('click', closeFolder)
 textarea.addEventListener('input', () => previewText(textarea.value))

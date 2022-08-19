@@ -5,6 +5,7 @@
     height: 100vh;
     display: flex;
     justify-content: flex-start;
+    position: relative;
 
     .sidebar {
         width: 4em;
@@ -15,6 +16,7 @@
         align-items: center;
         gap: 0.5em;
         padding-block: 1em;
+        z-index: 11;
 
         div {
             padding: 0.5em;
@@ -36,6 +38,74 @@
 
         .config {
             margin-top: auto;
+        }
+    }
+
+    .folder {
+        width: 15em;
+        height: 100%;
+        background-color: var(--folders-bg);
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        left: 4em;
+        border-radius: 0 15px 15px 0;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow: hidden;
+        color: var(--accent-color);
+
+        &.active {
+            transform: translate(0);
+        }
+
+        .title {
+            font-size: 1.5em;
+            font-weight: 800;
+            width: 100%;
+            height: 2em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .noNotes {
+            width: 70%;
+            height: calc(100% - (2em + 3em));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 0.5em;
+            color: var(--folders-color);
+
+            i {
+                font-size: 3em;
+            }
+
+            span {
+                text-align: center;
+                font-weight: 600;
+            }
+        }
+
+        .newNote {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 3em;
+            margin-top: auto;
+            gap: 0.5em;
+            transition: 0.2s ease-out;
+
+            &:hover {
+                cursor: pointer;
+                background-color: var(--folders-bg-hover);
+            }
         }
     }
 
@@ -212,21 +282,53 @@
             display: flex;
             position: relative;
 
-            &.hasPreview {
-                &::before {
-                    content: '';
-                    position: absolute;
-                    height: 95%;
-                    width: 2px;
-                    left: 50%;
-                    background-color: var(--divisor-color);
+            &::before {
+                content: '';
+                position: absolute;
+                height: 95%;
+                width: 2px;
+                left: 50%;
+                background-color: var(--divisor-color);
+                opacity: 0;
+                visibility: hidden;
+            }
+
+            .toggleView {
+                position: absolute;
+                bottom: 1em;
+                right: 1em;
+                width: 3em;
+                aspect-ratio: 1 / 1;
+                border-radius: 50%;
+                border: none;
+                outline: none;
+                background-color: var(--accent-color);
+                color: var(--bg-color);
+                transition: 0.2s ease-out;
+
+                &:hover {
+                    cursor: pointer;
+                    background-color: var(--accent-color-hover);
                 }
             }
 
-            .welcome {
-                flex-grow: 1;
+            &.active {
+                &::before {
+                    opacity: 1;
+                    visibility: visible;
+                }
+
+                .edit {
+                    display: initial;
+                }
+            }
+
+            .edit {
+                min-width: 50%;
+                max-width: 50%;
                 height: 100%;
                 padding: 1em;
+                display: none;
 
                 textarea {
                     width: 100%;
@@ -244,7 +346,7 @@
             }
 
             .preview {
-                width: 50%;
+                flex-grow: 1;
                 height: 100%;
                 padding: 1em;
                 overflow-y: auto;
