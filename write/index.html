@@ -21,6 +21,18 @@
             </div>
             <div class="add" title="Add Note">
                 <i class="fas fa-circle-plus"></i>
+                <div class="newNote">
+                    <i class="fas fa-sticky-note"></i>
+                    <div class="input">
+                        <input class="inputButton" type="text">
+                        <div class="close">
+                            <i class="fas fa-times"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="music" title="Play Music">
+                <i class="fas fa-music"></i>
             </div>
             <div class="config" title="Settings">
                 <i class="fas fa-gear"></i>
@@ -31,7 +43,6 @@
                 My Notes
             </span>
             <div class="list">
-
             </div>
             <div class="newNote">
                 <i class="fas fa-file-circle-plus"></i>
@@ -40,17 +51,8 @@
         </div>
         <div class="container1">
             <header>
-                <div class="tabs">
-                    <div class="welcomeTab active" title="Welcome to reverb!">
-                        <div class="icon">
-                            <i class="far fa-file"></i>
-                        </div>
-                        <div class="title">
-                            Welcome to reverb!
-                        </div>
-                        <div class="close">
-                            <i class="fas fa-times"></i>
-                        </div>
+                <div class="tabsWrapper">
+                    <div class="tabs">
                     </div>
                 </div>
                 <div class="addTab">
@@ -92,15 +94,36 @@
                 <button class="toggleView">
                     <i class="fas fa-pen"></i>
                 </button>
-                <div class="welcome edit">
-                    <textarea class="textarea"></textarea>
+                <div class="edit">
+                    <textarea class="textarea" spellcheck="false"></textarea>
                 </div>
                 <div class="preview">
+                </div>
+                <div class="guide">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
+                        <defs>
+                            <style>.cls-1{fill:none;stroke:#3874b1;stroke-linejoin:round;stroke-width:50.15135px;}</style>
+                        </defs>
+                        <path class="cls-1" d="M764.03264,499.9485a120.59677,120.59677,0,0,1-37.21122,
+                        166.43957l-.00487.00308L500.00429,810.32835,273.17876,
+                        666.39115l-.0001-.00006a120.59675,120.59675,0,0,1-37.20825-166.44442l1.00332-1.581a120.59676,
+                        120.59676,0,0,1,166.43932-37.20636L500.00429,522.454l96.5866-61.29167a120.59676,120.59676,0,0,
+                        1,166.44233,37.2112Z"/>
+                        <path class="cls-1" d="M572.32735,333.05745a72.32735,72.32735,0,0,1-144.6547,0c0-39.94529,72.32735-143.3858,
+                        72.32735-143.3858S572.32735,293.11216,572.32735,333.05745Z"/>
+                    </svg>
+                    <div class="info">
+                        <p>Add a new note!</p>
+                        <div class="addNote">
+                            <i class="fas fa-circle-plus"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <script src="../js/modules/themeSwitcher.js"></script>
-    <script src="../js/write.js"></script>
+    <script type="module" src="../js/firebase/client.js"></script>
+    <script type="module" src="../js/write.js"></script>
 </body>
 </html>

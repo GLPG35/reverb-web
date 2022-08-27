@@ -1,6 +1,6 @@
 {
   "name": "reverb",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "description": "A lightweight markdown notes app, with a music player.",
   "main": "index.js",
   "scripts": {

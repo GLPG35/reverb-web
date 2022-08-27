@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap");
 :root {
   --bg-color: #e2f5f7;
+  --guide-color: #97cdd3;
   --text-color: #2b2b2b;
   --accent-color: #3874b1;
   --accent-color-hover: #104171;
@@ -9,12 +10,19 @@
   --folders-bg: #edfcff;
   --folders-bg-hover: #b7d6dc;
   --folders-color: #95d2dd;
+  --folders-input-bg: #c2e4ec;
+  --folders-input-hover: #acd7e1;
+  --button-input-bg: #9bd6e0;
+  --delete-color: #ff295b;
+  --delete-hover: #c9143e;
   --blockquote-bg: #3874b130;
   --divisor-color: #3874b130;
+  --button-text: #eaeaea;
 }
 
 [data-theme=dark] {
   --bg-color: #282838;
+  --guide-color: #1b1b2d;
   --text-color: #e2f5f7;
   --accent-color: #80cedb;
   --accent-color-hover: #2293a7;
@@ -23,8 +31,14 @@
   --folders-bg: #202032;
   --folders-bg-hover: #28283e;
   --folders-color: #383852;
+  --folders-input-bg: #41415b;
+  --folders-input-hover: #53537d;
+  --button-input-bg: #41415b;
+  --delete-color: #fd4872;
+  --delete-hover: #e22b55;
   --blockquote-bg: #80cedb30;
   --divisor-color: #80cedb30;
+  --button-text: #2b2b2b;
 }
 
 *,
@@ -50,12 +64,100 @@ body {
   font-family: "Open Sans", sans-serif;
 }
 
+@keyframes modalContainer {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+@keyframes modal {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
 .mainContainer {
   width: 100%;
   height: 100vh;
   display: flex;
   justify-content: flex-start;
   position: relative;
+}
+.mainContainer .confirmDelete {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: rgba(12, 12, 12, 0.7411764706);
+  z-index: 15;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: modalContainer 0.5s ease-out forwards;
+}
+.mainContainer .confirmDelete .modal {
+  width: 20em;
+  height: 10em;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1.5em;
+  background-color: var(--bg-color);
+  padding-top: 1em;
+  transform: scale(0);
+  animation: modal 0.3s ease-in-out forwards;
+  animation-delay: 0.2s;
+}
+.mainContainer .confirmDelete .modal .content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+}
+.mainContainer .confirmDelete .modal .content i {
+  font-size: 2em;
+}
+.mainContainer .confirmDelete .modal .content p {
+  font-weight: 600;
+  max-width: 70%;
+  width: max-content;
+}
+.mainContainer .confirmDelete .modal .buttons {
+  width: 100%;
+  height: 3em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
+}
+.mainContainer .confirmDelete .modal .buttons button {
+  padding: 0.5em 2em;
+  border-radius: 50vh;
+  border: none;
+  outline: none;
+  color: var(--button-text);
+  font-family: "Open Sans", sans-serif;
+  font-weight: 600;
+  transition: 0.2s ease-out;
+}
+.mainContainer .confirmDelete .modal .buttons button.no {
+  background-color: var(--accent-color);
+}
+.mainContainer .confirmDelete .modal .buttons button:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+.mainContainer .confirmDelete .modal .buttons button:active {
+  transform: scale(0.9);
 }
 .mainContainer .sidebar {
   width: 4em;
@@ -82,6 +184,89 @@ body {
   color: var(--accent-color);
   transition: 0.2s ease-out;
 }
+.mainContainer .sidebar .add {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mainContainer .sidebar .add.active {
+  pointer-events: none;
+}
+.mainContainer .sidebar .add.active i {
+  color: var(--accent-color-hover);
+}
+.mainContainer .sidebar .add.active .newNote {
+  pointer-events: initial;
+  visibility: visible;
+  opacity: 1;
+}
+.mainContainer .sidebar .add .newNote {
+  position: absolute;
+  left: 4em;
+  width: 13em;
+  height: 3em;
+  padding-inline: 1em;
+  border-radius: 50vh;
+  background-color: var(--sidebar-bg);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.8em;
+  transition: 0.2s ease-in-out;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  z-index: -1;
+}
+.mainContainer .sidebar .add .newNote i {
+  font-size: 1.1em;
+  color: var(--accent-color);
+}
+.mainContainer .sidebar .add .newNote .input {
+  padding: 0;
+  border-radius: 50vh;
+  flex-grow: 1;
+  position: relative;
+  height: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 50vh;
+}
+.mainContainer .sidebar .add .newNote .input.error {
+  outline: 2px solid var(--delete-color);
+}
+.mainContainer .sidebar .add .newNote .input input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  border-radius: 50vh;
+  padding-left: 0.8em;
+  padding-right: 2.5em;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  font-size: 0.8em;
+  background-color: var(--button-input-bg);
+  color: var(--text-color);
+}
+.mainContainer .sidebar .add .newNote .input .close {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  padding-inline: 0.8em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1/1;
+  transition: 0.2s ease-out;
+}
+.mainContainer .sidebar .add .newNote .input .close:hover {
+  cursor: pointer;
+  background-color: var(--sidebar-bg);
+}
 .mainContainer .sidebar .config {
   margin-top: auto;
 }
@@ -105,18 +290,89 @@ body {
 .mainContainer .folder.active {
   transform: translate(0);
 }
+.mainContainer .folder.creating .noNotes {
+  display: none;
+}
 .mainContainer .folder .title {
   font-size: 1.5em;
   font-weight: 800;
   width: 100%;
-  height: 2em;
+  height: 2.5em;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  margin-bottom: 0.5em;
+}
+.mainContainer .folder .title::before {
+  content: "";
+  position: absolute;
+  width: 20%;
+  height: 2px;
+  background-color: var(--accent-color);
+  bottom: 0.2em;
+}
+.mainContainer .folder .list {
+  width: 100%;
+  height: max-content;
+  max-height: calc(100% - 5.5em);
+  overflow-y: auto;
+}
+.mainContainer .folder .list.empty {
+  display: none;
+}
+.mainContainer .folder .list .item {
+  width: 100%;
+  height: 2.2em;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-inline: 1em;
+  gap: 0.5em;
+  color: var(--text-color);
+  transition: 0.2s ease-out;
+  position: relative;
+}
+.mainContainer .folder .list .item:hover {
+  cursor: pointer;
+  background-color: var(--folders-bg-hover);
+}
+.mainContainer .folder .list .item:hover .delete {
+  opacity: 1;
+  visibility: 1;
+}
+.mainContainer .folder .list .item i {
+  color: var(--accent-color);
+}
+.mainContainer .folder .list .item span {
+  width: 75%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.mainContainer .folder .list .item .delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  height: 80%;
+  aspect-ratio: 1/1;
+  border-radius: 5px;
+  right: 1em;
+  opacity: 0;
+  visibility: 0;
+  transition: inherit;
+}
+.mainContainer .folder .list .item .delete:hover .fa-trash {
+  color: var(--delete-hover);
+}
+.mainContainer .folder .list .item .delete .fa-trash {
+  color: var(--delete-color);
+  transition: inherit;
 }
 .mainContainer .folder .noNotes {
   width: 70%;
-  height: calc(100% - 5em);
+  height: calc(100% - 7.5em);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -130,6 +386,58 @@ body {
 .mainContainer .folder .noNotes span {
   text-align: center;
   font-weight: 600;
+}
+.mainContainer .folder .inputTitle {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  height: 2em;
+  gap: 1em;
+  padding-inline: 1em;
+}
+.mainContainer .folder .inputTitle .input {
+  border-radius: 50vh;
+  flex-grow: 1;
+  position: relative;
+  height: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 50vh;
+}
+.mainContainer .folder .inputTitle .input.error {
+  outline: 2px solid var(--delete-color);
+}
+.mainContainer .folder .inputTitle .input input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  border-radius: 50vh;
+  padding-left: 0.8em;
+  padding-right: 2.5em;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  font-size: 0.8em;
+  background-color: var(--folders-input-bg);
+  color: var(--text-color);
+}
+.mainContainer .folder .inputTitle .input .close {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  padding-inline: 0.8em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1/1;
+  transition: 0.2s ease-out;
+}
+.mainContainer .folder .inputTitle .input .close:hover {
+  cursor: pointer;
+  background-color: var(--folders-input-hover);
 }
 .mainContainer .folder .newNote {
   display: flex;
@@ -145,24 +453,44 @@ body {
   cursor: pointer;
   background-color: var(--folders-bg-hover);
 }
+.mainContainer .folder .newNote[disabled] {
+  pointer-events: none;
+  color: var(--folders-color);
+}
 .mainContainer .container1 {
   width: calc(100% - 4em);
   height: 100%;
 }
 .mainContainer .container1 header {
   width: 100%;
+  max-width: 100%;
   height: 2.5em;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   padding-inline: 1em;
   gap: 1em;
+  margin-bottom: 0.5em;
+}
+.mainContainer .container1 header.noTabs {
+  padding-left: 0;
+}
+.mainContainer .container1 header .tabsWrapper {
+  max-width: 90%;
+  width: max-content;
+  overflow-x: scroll;
+  height: 100%;
+  padding-top: 0.5em;
+}
+.mainContainer .container1 header .tabsWrapper::-webkit-scrollbar {
+  display: none;
 }
 .mainContainer .container1 header .tabs {
   width: max-content;
   display: flex;
+  gap: 1em;
 }
-.mainContainer .container1 header .tabs .welcomeTab {
+.mainContainer .container1 header .tabs .welcomeTab, .mainContainer .container1 header .tabs .tab {
   width: 8em;
   height: 100%;
   display: flex;
@@ -171,7 +499,7 @@ body {
   gap: 0.5em;
   position: relative;
 }
-.mainContainer .container1 header .tabs .welcomeTab::before {
+.mainContainer .container1 header .tabs .welcomeTab::before, .mainContainer .container1 header .tabs .tab::before {
   content: "";
   position: absolute;
   bottom: -0.5em;
@@ -184,24 +512,68 @@ body {
   visibility: hidden;
   transition: 0.2s ease-out;
 }
-.mainContainer .container1 header .tabs .welcomeTab.active::before {
+.mainContainer .container1 header .tabs .welcomeTab.active::before, .mainContainer .container1 header .tabs .tab.active::before {
   opacity: 1;
   visibility: visible;
 }
-.mainContainer .container1 header .tabs .welcomeTab:hover {
+.mainContainer .container1 header .tabs .welcomeTab.creating .input, .mainContainer .container1 header .tabs .tab.creating .input {
+  padding: 0;
+  border-radius: 50vh;
+  width: 80%;
+  position: relative;
+  height: 1.3em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 50vh;
+}
+.mainContainer .container1 header .tabs .welcomeTab.creating .input.error, .mainContainer .container1 header .tabs .tab.creating .input.error {
+  outline: 2px solid var(--delete-color);
+}
+.mainContainer .container1 header .tabs .welcomeTab.creating .input input, .mainContainer .container1 header .tabs .tab.creating .input input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  border-radius: 50vh;
+  padding-left: 0.8em;
+  padding-right: 2.5em;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  font-size: 0.8em;
+  background-color: var(--folders-input-bg);
+  color: var(--text-color);
+}
+.mainContainer .container1 header .tabs .welcomeTab.creating .input .close, .mainContainer .container1 header .tabs .tab.creating .input .close {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  padding-inline: 0.8em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1/1;
+  transition: 0.2s ease-out;
+}
+.mainContainer .container1 header .tabs .welcomeTab.creating .input .close:hover, .mainContainer .container1 header .tabs .tab.creating .input .close:hover {
+  cursor: pointer;
+  background-color: var(--folders-input-hover);
+}
+.mainContainer .container1 header .tabs .welcomeTab:hover, .mainContainer .container1 header .tabs .tab:hover {
   cursor: pointer;
 }
-.mainContainer .container1 header .tabs .welcomeTab:hover .close {
+.mainContainer .container1 header .tabs .welcomeTab:hover .close, .mainContainer .container1 header .tabs .tab:hover .close {
   opacity: 1;
   visibility: visible;
 }
-.mainContainer .container1 header .tabs .welcomeTab .title {
+.mainContainer .container1 header .tabs .welcomeTab .title, .mainContainer .container1 header .tabs .tab .title {
   width: 60%;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 }
-.mainContainer .container1 header .tabs .welcomeTab .close {
+.mainContainer .container1 header .tabs .welcomeTab .close, .mainContainer .container1 header .tabs .tab .close {
   width: 20%;
   display: flex;
   align-items: center;
@@ -213,7 +585,7 @@ body {
   border-radius: 1vh;
   padding-block: 0.25em;
 }
-.mainContainer .container1 header .tabs .welcomeTab .close:hover {
+.mainContainer .container1 header .tabs .welcomeTab .close:hover, .mainContainer .container1 header .tabs .tab .close:hover {
   background-color: var(--close-bg);
 }
 .mainContainer .container1 header .addTab {
@@ -289,7 +661,7 @@ body {
 }
 .mainContainer .container1 .document {
   width: 100%;
-  height: calc(100% - 2.5em);
+  height: calc(100% - 3em);
   display: flex;
   position: relative;
 }
@@ -315,6 +687,11 @@ body {
   background-color: var(--accent-color);
   color: var(--bg-color);
   transition: 0.2s ease-out;
+}
+.mainContainer .container1 .document .toggleView.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 .mainContainer .container1 .document .toggleView:hover {
   cursor: pointer;
@@ -384,6 +761,45 @@ body {
 .mainContainer .container1 .document .preview hr {
   border: none;
   border-top: 2px solid var(--accent-color);
+}
+.mainContainer .container1 .document .guide {
+  position: absolute;
+  width: 30%;
+  align-self: center;
+  right: 0;
+  left: 0;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  color: var(--guide-color);
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+.mainContainer .container1 .document .guide.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+}
+.mainContainer .container1 .document .guide svg path {
+  stroke: var(--guide-color);
+}
+.mainContainer .container1 .document .guide .info {
+  width: max-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2em;
+  font-weight: 700;
+  font-size: 2em;
+}
+.mainContainer .container1 .document .guide .info .addNote {
+  padding: 0.3em;
+}
+.mainContainer .container1 .document .guide .info .addNote:hover {
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=write.css.map */
