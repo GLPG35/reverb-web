@@ -1,71 +1,24 @@
-const body = document.querySelector('body')
-const h1 = document.querySelector('.container1 h1')
-const button = document.querySelector('.container1 .change')
-const button2 = document.querySelector('.container1 .count')
+const calcSueldo = () => {
+    const nombre = prompt('Ingrese su nombre:')
+    const sueldo = Number(prompt('Ingrese su sueldo nominal:'))
+    const hijos = Number(prompt('Tiene hijos?\n\n1) Si\n2) No'))
 
-let counter = 0
+    // Cálculo de descuentos
+    const discBPS = calcImpuesto(sueldo, 18)
+    const discIRPF = calcImpuesto(sueldo, 15)
+    const discFONASA = hijos == 1 ? calcImpuesto(sueldo, 6) : calcImpuesto(sueldo, 4)
+    const discFRL = calcImpuesto(sueldo, 1.25)
 
-const changeFont = () => {
-    let error = false
+    // Sueldo líquido
+    const liquido = sueldo - discBPS - discIRPF - discFONASA - discFRL
 
-    do {
-        let opt = Number(prompt(`
-            Ingrese la fuente que quiere seleccionar:
-
-            1) Open Sans
-            2) Roboto Mono
-            3) Source Code Pro
-            4) Silkscreen`
-        ))
-
-        if (error) error = false
-
-        switch (opt) {
-            case 0:
-                return
-
-            case 1:
-                body.style.fontFamily = 'Open Sans'
-                h1.style.fontWeight = '900'
-                break
-
-            case 2:
-                body.style.fontFamily = 'Roboto Mono'
-                h1.style.fontWeight = '700'
-                break
-
-            case 3:
-                body.style.fontFamily = 'Source Code Pro'
-                h1.style.fontWeight = '900'
-                break
-
-            case 4:
-                body.style.fontFamily = 'Silkscreen'
-                h1.style.fontWeight = '400'
-                break
-
-            default:
-                alert('Incorrecto, ingrese una opción válida')
-                error = true
-                break
-        }
-
-        if (opt == 1 || opt == 2 || opt == 3 || opt == 4) counter++
-    } while (error)
+    alert(`${nombre}, su sueldo líquido es de $${liquido}, gracias por permitirnos robarle su dinero`)
 }
 
-const timesPressed = (num) => {
-    let drawing = ''
+const calcImpuesto = (sueldo, descuento) => {
+    const parseDescuento = descuento / 100
+    
+    return sueldo * parseDescuento
+} 
 
-    for (let i = 0; i < num; i++) {
-        drawing = drawing + ' *'
-    }
-
-    alert(`
-        ${drawing}
-        Cambiaste la fuente ${num} ${num == 1 ? 'vez' : 'veces'}
-    `)
-}
-
-button.addEventListener('click', changeFont)
-button2.addEventListener('click', () => timesPressed(counter))
+document.querySelector('button').addEventListener('click', calcSueldo)
