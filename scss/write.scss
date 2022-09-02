@@ -22,6 +22,26 @@
     }
 }
 
+@keyframes disc {
+    from {
+        transform: rotate(0);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes spinnerRotate {
+    0% {
+        transform: rotate(0);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    } 
+}
+
 .mainContainer {
     width: 100%;
     height: 100vh;
@@ -451,6 +471,330 @@
             &[disabled] {
                 pointer-events: none;
                 color: var(--folders-color);
+            }
+        }
+    }
+
+    .musicPlayer {
+        width: 15em;
+        height: 100%;
+        background-color: var(--folders-bg);
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        left: 4em;
+        border-radius: 0 15px 15px 0;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow: hidden;
+        color: var(--accent-color);
+
+        &.active {
+            transform: translateX(0);
+        }
+
+        .title {
+            font-size: 1.5em;
+            font-weight: 800;
+            width: 100%;
+            height: 2.5em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin-bottom: 0.5em;
+
+            &::before {
+                content: '';
+                position: absolute;
+                width: 20%;
+                height: 2px;
+                background-color: var(--accent-color);
+                bottom: 0.2em;
+            }
+        }
+
+        .cover {
+            width: 80%;
+            height: max-content;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 1em;
+            margin-bottom: 0.5em;
+
+            .fa-compact-disc {
+                font-size: 9em;
+                animation: disc 3s linear infinite forwards;
+                animation-play-state: paused;
+            }
+
+            .currentTheme {
+                display: flex;
+                align-items: center;
+                gap: 0.5em;
+                height: 1.5em;
+                width: 100%;
+
+                .fa-music {
+                    font-size: 1.2em;
+                }
+
+                .themeName {
+                    flex-grow: 1;
+                    white-space: nowrap;
+                    overflow-x: hidden;
+                    text-overflow: ellipsis;
+                }
+            }
+        }
+
+        .controls {
+            height: 3em;
+            width: 80%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8em;
+            position: relative;
+
+            .prev, .play, .next {
+                padding: 0.5em;
+                width: max-content;
+                height: max-content;
+                border-radius: 10px;
+                transition: 0.2s ease-out;
+
+                &:hover {
+                    background-color: var(--folders-bg-hover);
+                    cursor: pointer;
+                }
+
+                i {
+                    font-size: 1.8em;
+                }
+            }
+
+            .play {
+                padding-inline: 0.8em;
+            }
+        }
+
+        .musicList {
+            width: 100%;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            position: relative;
+            padding-top: 2em;
+
+            &::before {
+                position: absolute;
+                content: '';
+                top: 1em;
+                height: 2px;
+                width: 80%;
+                background-color: var(--accent-color);
+            }
+
+            .list {
+                width: 100%;
+                max-height: 17em;
+                padding-block: 0.5em;
+                overflow-y: auto;
+                position: relative;
+
+                .spinnerContainer {
+                    position: absolute;
+                    top: 0;
+                    height: 100%;
+                    width: 100%;
+                    z-index: 10;
+                    visibility: hidden;
+                    opacity: 0;
+                    transition: 0.2s ease-out;
+
+                    &.active {
+                        visibility: visible;
+                        opacity: 1;
+                    }
+
+                    .spinnerWrapper {
+                        position: fixed;
+                        width: 100%;
+                        height: 17em;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        pointer-events: none;
+                        background-color: var(--folders-bg);
+        
+                        .spinner {
+                            height: 48px;
+                            width: 48px;
+                            color: var(--folders-color);
+                            position: relative;
+                            display: inline-block;
+                            border: 5px solid;
+                            border-radius: 50%;
+                            border-top-color: transparent;
+                            animation: spinnerRotate 1s linear infinite;
+                        }
+                    }
+                }
+                
+                .noTracks {
+                    width: 100%;
+                    height: 16em;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-direction: column;
+                    gap: 1em;
+                    color: var(--folders-color);
+
+                    i {
+                        font-size: 3em;
+                    }
+                    
+                    span {
+                        text-align: center;
+                        width: 60%;
+                        font-weight: 600;
+                    }
+                }
+
+                .item {
+                    width: 100%;
+                    height: 3em;
+                    padding-inline: 1em;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    transition: 0.2s ease-out;
+
+                    &:hover {
+                        background-color: var(--folders-bg-hover);
+                        cursor: pointer;
+
+                        .delete {
+                            opacity: 1;
+                            visibility: visible;
+                        }
+                    }
+
+                    .trackInfo {
+                        white-space: nowrap;
+                        max-width: 85%;
+                        overflow-x: hidden;
+                        text-overflow: ellipsis;
+
+                        .trackNumber {
+                            font-weight: 900;
+                        }
+                    }
+
+                    .delete {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        height: 80%;
+                        aspect-ratio: 1 / 1;
+                        opacity: 0;
+                        visibility: 0;
+                        transition: 0.2s ease-out;
+                        
+                        &:hover {
+                            .fa-trash {
+                                color: var(--delete-hover);
+                            }
+                        }
+    
+                        .fa-trash {
+                            color: var(--delete-color);
+                            transition: inherit;
+                        }
+                    }
+                }
+            }
+
+            .quantity {
+                margin-top: auto;
+                height: 3em;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .uploadTrack {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                height: 3em;
+                gap: 0.5em;
+                transition: 0.2s ease-out;
+
+                &:hover {
+                    cursor: pointer;
+                    background-color: var(--folders-bg-hover);
+                }
+
+                &[disabled] {
+                    pointer-events: none;
+                    color: var(--folders-color);
+                }
+            }
+
+            input {
+                display: none;
+            }
+        }
+    }
+
+    .volumeIndicator {
+        position: absolute;
+        width: 10em;
+        height: 3em;
+        bottom: 1em;
+        left: 5em;
+        z-index: 20;
+        background-color: var(--sidebar-bg);
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        padding-inline: 1em;
+        gap: 0.8em;
+        transition: 0.3s ease-in-out;
+        visibility: hidden;
+        opacity: 0;
+
+        &.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        &.menuOpen {
+            transform: translateX(15em);
+        }
+
+        .indicator {
+            flex-grow: 1;
+            height: 0.5em;
+            border-radius: 50vh;
+            overflow: hidden;
+            background-color: var(--folders-color);
+
+            .progress {
+                height: 100%;
+                width: 10%;
+                background-color: var(--accent-color);
             }
         }
     }

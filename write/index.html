@@ -49,6 +49,51 @@
                 New Note
             </div>
         </div>
+        <div class="musicPlayer">
+            <span class="title">
+                Music Player
+            </span>
+            <div class="cover">
+                <i class="fas fa-compact-disc"></i>
+                <div class="currentTheme">
+                    <i class="fas fa-music"></i>
+                    <span class="themeName"></span>
+                    <audio></audio>
+                </div>
+            </div>
+            <div class="controls">
+                <div class="prev">
+                    <i class="fas fa-backward"></i>
+                </div>
+                <div class="play">
+                    <i class="fas fa-play"></i>
+                </div>
+                <div class="next">
+                    <i class="fas fa-forward"></i>
+                </div>
+            </div>
+            <div class="musicList">
+                <div class="list">
+                    <div class="spinnerContainer">
+                        <div class="spinnerWrapper">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+                <span class="quantity"></span>
+                <div class="uploadTrack">
+                    <i class="fas fa-file-arrow-up"></i>
+                    Upload Music
+                </div>
+                <input type="file" accept="audio/*">
+            </div>
+        </div>
+        <div class="volumeIndicator">
+            <i class="fas fa-volume-low"></i>
+            <div class="indicator">
+                <div class="progress"></div>
+            </div>
+        </div>
         <div class="container1">
             <header>
                 <div class="tabsWrapper">
@@ -124,6 +169,7 @@
     </div>
     <script src="../js/modules/themeSwitcher.js"></script>
     <script type="module" src="../js/firebase/client.js"></script>
+    <script src="../js/keywords.js"></script>
     <script type="module" src="../js/write.js"></script>
 </body>
 </html>

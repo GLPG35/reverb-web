@@ -22,7 +22,7 @@
 
 [data-theme=dark] {
   --bg-color: #282838;
-  --guide-color: #1b1b2d;
+  --guide-color: #191929;
   --text-color: #e2f5f7;
   --accent-color: #80cedb;
   --accent-color-hover: #2293a7;
@@ -80,6 +80,22 @@ body {
   }
   100% {
     transform: scale(1);
+  }
+}
+@keyframes disc {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes spinnerRotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 .mainContainer {
@@ -456,6 +472,286 @@ body {
 .mainContainer .folder .newNote[disabled] {
   pointer-events: none;
   color: var(--folders-color);
+}
+.mainContainer .musicPlayer {
+  width: 15em;
+  height: 100%;
+  background-color: var(--folders-bg);
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 4em;
+  border-radius: 0 15px 15px 0;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  color: var(--accent-color);
+}
+.mainContainer .musicPlayer.active {
+  transform: translateX(0);
+}
+.mainContainer .musicPlayer .title {
+  font-size: 1.5em;
+  font-weight: 800;
+  width: 100%;
+  height: 2.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-bottom: 0.5em;
+}
+.mainContainer .musicPlayer .title::before {
+  content: "";
+  position: absolute;
+  width: 20%;
+  height: 2px;
+  background-color: var(--accent-color);
+  bottom: 0.2em;
+}
+.mainContainer .musicPlayer .cover {
+  width: 80%;
+  height: max-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1em;
+  margin-bottom: 0.5em;
+}
+.mainContainer .musicPlayer .cover .fa-compact-disc {
+  font-size: 9em;
+  animation: disc 3s linear infinite forwards;
+  animation-play-state: paused;
+}
+.mainContainer .musicPlayer .cover .currentTheme {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  height: 1.5em;
+  width: 100%;
+}
+.mainContainer .musicPlayer .cover .currentTheme .fa-music {
+  font-size: 1.2em;
+}
+.mainContainer .musicPlayer .cover .currentTheme .themeName {
+  flex-grow: 1;
+  white-space: nowrap;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+}
+.mainContainer .musicPlayer .controls {
+  height: 3em;
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8em;
+  position: relative;
+}
+.mainContainer .musicPlayer .controls .prev, .mainContainer .musicPlayer .controls .play, .mainContainer .musicPlayer .controls .next {
+  padding: 0.5em;
+  width: max-content;
+  height: max-content;
+  border-radius: 10px;
+  transition: 0.2s ease-out;
+}
+.mainContainer .musicPlayer .controls .prev:hover, .mainContainer .musicPlayer .controls .play:hover, .mainContainer .musicPlayer .controls .next:hover {
+  background-color: var(--folders-bg-hover);
+  cursor: pointer;
+}
+.mainContainer .musicPlayer .controls .prev i, .mainContainer .musicPlayer .controls .play i, .mainContainer .musicPlayer .controls .next i {
+  font-size: 1.8em;
+}
+.mainContainer .musicPlayer .controls .play {
+  padding-inline: 0.8em;
+}
+.mainContainer .musicPlayer .musicList {
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  padding-top: 2em;
+}
+.mainContainer .musicPlayer .musicList::before {
+  position: absolute;
+  content: "";
+  top: 1em;
+  height: 2px;
+  width: 80%;
+  background-color: var(--accent-color);
+}
+.mainContainer .musicPlayer .musicList .list {
+  width: 100%;
+  max-height: 17em;
+  padding-block: 0.5em;
+  overflow-y: auto;
+  position: relative;
+}
+.mainContainer .musicPlayer .musicList .list .spinnerContainer {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.2s ease-out;
+}
+.mainContainer .musicPlayer .musicList .list .spinnerContainer.active {
+  visibility: visible;
+  opacity: 1;
+}
+.mainContainer .musicPlayer .musicList .list .spinnerContainer .spinnerWrapper {
+  position: fixed;
+  width: 100%;
+  height: 17em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  background-color: var(--folders-bg);
+}
+.mainContainer .musicPlayer .musicList .list .spinnerContainer .spinnerWrapper .spinner {
+  height: 48px;
+  width: 48px;
+  color: var(--folders-color);
+  position: relative;
+  display: inline-block;
+  border: 5px solid;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spinnerRotate 1s linear infinite;
+}
+.mainContainer .musicPlayer .musicList .list .noTracks {
+  width: 100%;
+  height: 16em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1em;
+  color: var(--folders-color);
+}
+.mainContainer .musicPlayer .musicList .list .noTracks i {
+  font-size: 3em;
+}
+.mainContainer .musicPlayer .musicList .list .noTracks span {
+  text-align: center;
+  width: 60%;
+  font-weight: 600;
+}
+.mainContainer .musicPlayer .musicList .list .item {
+  width: 100%;
+  height: 3em;
+  padding-inline: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: 0.2s ease-out;
+}
+.mainContainer .musicPlayer .musicList .list .item:hover {
+  background-color: var(--folders-bg-hover);
+  cursor: pointer;
+}
+.mainContainer .musicPlayer .musicList .list .item:hover .delete {
+  opacity: 1;
+  visibility: visible;
+}
+.mainContainer .musicPlayer .musicList .list .item .trackInfo {
+  white-space: nowrap;
+  max-width: 85%;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+}
+.mainContainer .musicPlayer .musicList .list .item .trackInfo .trackNumber {
+  font-weight: 900;
+}
+.mainContainer .musicPlayer .musicList .list .item .delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80%;
+  aspect-ratio: 1/1;
+  opacity: 0;
+  visibility: 0;
+  transition: 0.2s ease-out;
+}
+.mainContainer .musicPlayer .musicList .list .item .delete:hover .fa-trash {
+  color: var(--delete-hover);
+}
+.mainContainer .musicPlayer .musicList .list .item .delete .fa-trash {
+  color: var(--delete-color);
+  transition: inherit;
+}
+.mainContainer .musicPlayer .musicList .quantity {
+  margin-top: auto;
+  height: 3em;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mainContainer .musicPlayer .musicList .uploadTrack {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 3em;
+  gap: 0.5em;
+  transition: 0.2s ease-out;
+}
+.mainContainer .musicPlayer .musicList .uploadTrack:hover {
+  cursor: pointer;
+  background-color: var(--folders-bg-hover);
+}
+.mainContainer .musicPlayer .musicList .uploadTrack[disabled] {
+  pointer-events: none;
+  color: var(--folders-color);
+}
+.mainContainer .musicPlayer .musicList input {
+  display: none;
+}
+.mainContainer .volumeIndicator {
+  position: absolute;
+  width: 10em;
+  height: 3em;
+  bottom: 1em;
+  left: 5em;
+  z-index: 20;
+  background-color: var(--sidebar-bg);
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  padding-inline: 1em;
+  gap: 0.8em;
+  transition: 0.3s ease-in-out;
+  visibility: hidden;
+  opacity: 0;
+}
+.mainContainer .volumeIndicator.active {
+  visibility: visible;
+  opacity: 1;
+}
+.mainContainer .volumeIndicator.menuOpen {
+  transform: translateX(15em);
+}
+.mainContainer .volumeIndicator .indicator {
+  flex-grow: 1;
+  height: 0.5em;
+  border-radius: 50vh;
+  overflow: hidden;
+  background-color: var(--folders-color);
+}
+.mainContainer .volumeIndicator .indicator .progress {
+  height: 100%;
+  width: 10%;
+  background-color: var(--accent-color);
 }
 .mainContainer .container1 {
   width: calc(100% - 4em);

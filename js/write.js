@@ -1,4 +1,5 @@
-import { addNote } from './firebase/client.js'
+import { addMusic, addNote, getMusic, newMusic, deleteMusic } from './firebase/client.js'
+import { getDownloadURL } from "https://www.gstatic.com/firebasejs/9.9.3/firebase-storage.js"
 
 const toggleViewButton = document.querySelector('.toggleView')
 let noWelcome = localStorage.getItem('noWelcome') ? localStorage.getItem('noWelcome') : false
@@ -49,12 +50,25 @@ const closeWelcome = document.querySelector('.container1 .tabs .close')
 const newNote = document.querySelector('.folder .newNote')
 const addNoteTab = document.querySelector('header .addTab')
 const addGuideNote = document.querySelector('.guide .addNote')
+const musicButton = document.querySelector('.sidebar .music')
+const musicPlayer = document.querySelector('.musicPlayer')
+const disc = document.querySelector('.musicPlayer .fa-compact-disc')
+const themeName = document.querySelector('.musicPlayer .themeName')
+const playButton = document.querySelector('.musicPlayer .play')
+const prevButton = document.querySelector('.musicPlayer .prev')
+const nextButton = document.querySelector('.musicPlayer .next')
+const musicList = document.querySelector('.musicPlayer .musicList .list')
+const musicQuantity = document.querySelector('.musicPlayer .quantity')
+const uploadTrack = document.querySelector('.musicPlayer .uploadTrack')
+const uploadTrackInput = document.querySelector('.musicPlayer input')
+const volumeIndicator = document.querySelector('.volumeIndicator')
+let volTimer
 const uid = localStorage.getItem('uid') ? localStorage.getItem('uid') :
     (localStorage.setItem('uid', Date.now()), localStorage.getItem('uid'))
 
 const checkNotes = () => {
     const tabs = document.querySelector('.container1 .tabs')
-    const notesList = localStorage.getItem('notes') ? JSON.parse(localStorage.getItem('notes')) :
+    const notesList = JSON.parse(localStorage.getItem('notes')) ||
         (localStorage.setItem('notes', JSON.stringify([])), [])
     const openNotes = localStorage.getItem('openNotes') ? JSON.parse(localStorage.getItem('openNotes')) :
         (localStorage.setItem('openNotes', JSON.stringify([])), [])
@@ -208,8 +222,7 @@ const addTab = (titleID) => {
 
     changeTab(titleID)
 
-    toggleViewIcon.classList.contains('fa-pen') && toggleViewButton.click()
-    textarea.focus()
+    toggleViewIcon.classList.contains('fa-pen') && toggleView()
 
     checkTabs()
 }
@@ -238,9 +251,10 @@ const closeTab = (titleID) => {
     
     document.querySelector(`.tabs .tab[title="${titleID}"]`).remove()
     const noteIndex = openNotesList.findIndex(x => x.title == titleID)
+    const newOpenNotes = JSON.parse(localStorage.getItem('openNotes'))
 
-    openNotesList.splice(noteIndex, 1)
-    localStorage.setItem('openNotes', JSON.stringify(openNotesList))
+    newOpenNotes.splice(noteIndex, 1)
+    localStorage.setItem('openNotes', JSON.stringify(newOpenNotes))
 
     checkTabs()
 }
@@ -250,13 +264,17 @@ const changeTab = (titleID) => {
     const noteIndex = notes.findIndex(x => x.title == titleID)
     const openNotesList = JSON.parse(localStorage.getItem('openNotes'))
     
-    const newOpenNotes = openNotesList.map(({title, active}) => {
-        return {
-            title,
-            ...(title == titleID && active == true ? {active: true} :
-                active == true ? {active: false} :
-                title == titleID ? {active: true} :
-                {active: false})
+    const newOpenNotes = openNotesList.map(x => {
+        if (x.title == titleID) {
+            return {
+                ...x,
+                active: true
+            }
+        } else {
+            return {
+                ...x,
+                active: false
+            }
         }
     })
 
@@ -264,7 +282,6 @@ const changeTab = (titleID) => {
 
     textarea.value = (notes[noteIndex].content)
     previewText(notes[noteIndex].content)
-    textarea.focus()
 
     document.querySelector('.tabs .active') && document.querySelector(`.tabs .active`).classList.remove('active')
     document.querySelector(`.tabs .tab[title="${titleID}"]`).classList.add('active')
@@ -332,167 +349,11 @@ const confirmDelete = (titleID) => {
     })
 }
 
-const keyWords = [
-    {
-        rule: /<(http:\/\/|https:\/\/)(.*)>/gim,
-        parse: '<a href="$1$2">$1$2</a>'
-    },
-    {
-        rule: /<(.*)@(.*)>/gim,
-        parse: '<a href="mailto:$1@$2">$1@$2</a>'
-    },
-    {
-        rule: /^# (.*$)/gim,
-        parse: '<h1>$1</h1>'
-    },
-    {
-        rule: /^## (.*$)/gim,
-        parse: '<h2>$1</h2>'
-    },
-    {
-        rule: /^### (.*$)/gim,
-        parse: '<h3>$1</h3>'
-    },
-    {
-        rule: /^#### (.*$)/gim,
-        parse: '<h4>$1</h4>'
-    },
-    {
-        rule: /^##### (.*$)/gim,
-        parse: '<h5>$1</h5>'
-    },
-    {
-        rule: /^###### (.*$)/gim,
-        parse: '<h6>$1</h6>'
-    },
-    {
-        rule: /^(.+)\n\={3,}/gim,
-        parse: '<h1>$1</h1>\n<hr>'
-    },
-    {
-        rule: /^(.+)\n\-{3,}/gim,
-        parse: '<h2>$1</h2>\n<hr>'
-    },
-    {
-        rule: /^(?!.+)\n\={3,}/gim,
-        parse: '\n<hr>'
-    },
-    {
-        rule: /^(?!.+)\n\-{3,}/gim,
-        parse: '\n<hr>'
-    },
-    {
-        rule: /\*\*(.*)\*\*/gim,
-        parse: '<b>$1</b>'
-    },
-    {
-        rule: /__(.*)__/gim,
-        parse: '<b>$1</b>'
-    },
-    {
-        rule: /\*(.*)\*/gim,
-        parse: '<em>$1</em>'
-    },
-    {
-        rule: /\b(?![https:\/\/|http:\/\/])_(.*)_/gim,
-        parse: '<em>$1</em>'
-    },
-    {
-        rule: /^> (.*)/gim,
-        parse: '<blockquote>$1</blockquote>'
-    },
-    {
-        rule: /^ *\n\*/gim,
-        parse: '<ul>\n*'
-    },
-    {
-        rule: /^(\*.+) *\n([^\*])/gim,
-        parse: '$1</ul>$2'
-    },
-    {
-        rule: /^\* (.+)/gim,
-        parse: '<li>$1</li>'
-    },
-    {
-        rule: /^ *\n-/gim,
-        parse: '<ul>\n-'
-    },
-    {
-        rule: /^(-.+) *\n([^-])/gim,
-        parse: '$1</ul>$2'
-    },
-    {
-        rule: /^- (.+)/gim,
-        parse: '<li>$1</li>'
-    },
-    {
-        rule: /^ *\n\d+\. /gim,
-        parse: '<ol>\n1.'
-    },
-    {
-        rule: /^(\d\..+) *\n([^\d\.])/gim,
-        parse: '$1</ol>$2'
-    },
-    {
-        rule: /^\d\.(.+)/gim,
-        parse: '<li>$1</li>'
-    },
-    {
-        rule: /\!\[([^\]]+)\]\(([^\)]+)\)/gim,
-        parse: '<img src="$2" alt="$1" />'
-    },
-    {
-        rule: /\[([^\]]+)\]\(([^\)]+)\)/gim,
-        parse: '<a href="$2">$1</a>'
-    },
-    {
-        rule: /\`(.*)\`/gim,
-        parse: '<code>$1</code>'
-    },
-    {
-        rule: /\n/gim,
-        parse: '<br>'
-    }
-]
-
-const keyWords2 = [
-    {
-        rule: /<\/h1><br>/gim,
-        parse: '</h1>'
-    },
-    {
-        rule: /<\/h2><br>/gim,
-        parse: '</h2>'
-    },
-    {
-        rule: /<\/h3><br>/gim,
-        parse: '</h3>'
-    },
-    {
-        rule: /<\/h4><br>/gim,
-        parse: '</h4>'
-    },
-    {
-        rule: /<\/h5><br>/gim,
-        parse: '</h5>'
-    },
-    {
-        rule: /<\/h6><br>/gim,
-        parse: '</h6>'
-    },
-    {
-        rule: /<hr><br>/gim,
-        parse: '<hr>'
-    },
-    {
-        rule: /<\/li><br><li>/gim,
-        parse: '</li><li>'
-    }
-]
-
 const saveDocument = (e) => {
     if (e.ctrlKey && e.keyCode == 83) {
         e.preventDefault()
+    } else if (e.keyCode == 27) {
+        closeMenu()
     }
 }
 
@@ -526,23 +387,517 @@ const toggleView = () => {
     }
 
     rDocument.classList.toggle('active')
+    textarea.focus()
+}
+
+const togglePlay = () => {
+    const audio = document.querySelector('audio')
+
+    if (!document.querySelector('.musicPlayer .controls').classList.contains('active')) {
+        document.querySelector('.musicPlayer .play i').classList.remove('fa-play')
+        document.querySelector('.musicPlayer .play i').classList.add('fa-pause')
+        disc.style.animationPlayState = 'running'
+
+        audio.src && audio.play()
+    } else {
+        document.querySelector('.musicPlayer .play i').classList.add('fa-play')
+        document.querySelector('.musicPlayer .play i').classList.remove('fa-pause')
+        disc.style.animationPlayState = 'paused'
+
+        audio.src && audio.pause()
+    }
+
+    document.querySelector('.musicPlayer .controls').classList.toggle('active')
+}
+
+const prevSong = () => {
+    const audio = document.querySelector('audio')
+    const musicList = JSON.parse(localStorage.getItem('music')) || []
+    const currentIndex = musicList.findIndex(x => x.playing == true)
+    
+    if (currentIndex == 0) {
+        const newMusicList = musicList.map(x => {
+            if (x.playing == true) {
+                return {
+                    ...x,
+                    playing: false
+                }
+            } else if (x.id == musicList[musicList.length - 1].id) {
+                return {
+                    ...x,
+                    playing: true
+                }
+            } else {
+                return x
+            }
+        })
+
+        localStorage.setItem('music', JSON.stringify(newMusicList))
+
+        audio.src = musicList[musicList.length - 1].url
+        themeName.innerHTML = musicList[musicList.length - 1].title
+        
+        if (!document.querySelector('.musicPlayer .controls').classList.contains('active')) {
+            document.querySelector('.musicPlayer .play i').classList.remove('fa-play')
+            document.querySelector('.musicPlayer .play i').classList.add('fa-pause')
+            disc.style.animationPlayState = 'running'
+
+            audio.src && audio.play()
+
+            document.querySelector('.musicPlayer .controls').classList.add('active')
+        } else {
+            audio.play()
+        }
+    } else {
+        const newMusicList = musicList.map(x => {
+            if (x.playing == true) {
+                return {
+                    ...x,
+                    playing: false
+                }
+            } else if (x.id == musicList[currentIndex - 1].id) {
+                return {
+                    ...x,
+                    playing: true
+                }
+            } else {
+                return x
+            }
+        })
+
+        localStorage.setItem('music', JSON.stringify(newMusicList))
+        
+        audio.src = musicList[currentIndex - 1].url
+        themeName.innerHTML = musicList[currentIndex - 1].title
+
+        if (!document.querySelector('.musicPlayer .controls').classList.contains('active')) {
+            document.querySelector('.musicPlayer .play i').classList.remove('fa-play')
+            document.querySelector('.musicPlayer .play i').classList.add('fa-pause')
+            disc.style.animationPlayState = 'running'
+
+            audio.src && audio.play()
+            document.querySelector('.musicPlayer .controls').classList.add('active')
+        } else {
+            audio.play()
+        }
+    }
+}
+
+const nextSong = () => {
+    const audio = document.querySelector('audio')
+    const musicList = JSON.parse(localStorage.getItem('music')) || []
+    const currentIndex = musicList.findIndex(x => x.playing == true)
+    
+    if (currentIndex == (musicList.length - 1)) {
+        const newMusicList = musicList.map(x => {
+            if (x.playing == true) {
+                return {
+                    ...x,
+                    playing: false
+                }
+            } else if (x.id == musicList[0].id) {
+                return {
+                    ...x,
+                    playing: true
+                }
+            } else {
+                return x
+            }
+        })
+
+        localStorage.setItem('music', JSON.stringify(newMusicList))
+
+        audio.src = musicList[0].url
+        themeName.innerHTML = musicList[0].title
+        
+        if (!document.querySelector('.musicPlayer .controls').classList.contains('active')) {
+            document.querySelector('.musicPlayer .play i').classList.remove('fa-play')
+            document.querySelector('.musicPlayer .play i').classList.add('fa-pause')
+            disc.style.animationPlayState = 'running'
+
+            audio.src && audio.play()
+
+            document.querySelector('.musicPlayer .controls').classList.add('active')
+        } else {
+            audio.play()
+        }
+    } else {
+        const newMusicList = musicList.map(x => {
+            if (x.playing == true) {
+                return {
+                    ...x,
+                    playing: false
+                }
+            } else if (x.id == musicList[currentIndex + 1].id) {
+                return {
+                    ...x,
+                    playing: true
+                }
+            } else {
+                return x
+            }
+        })
+
+        localStorage.setItem('music', JSON.stringify(newMusicList))
+        
+        audio.src = musicList[currentIndex + 1].url
+        themeName.innerHTML = musicList[currentIndex + 1].title
+
+        if (!document.querySelector('.musicPlayer .controls').classList.contains('active')) {
+            document.querySelector('.musicPlayer .play i').classList.remove('fa-play')
+            document.querySelector('.musicPlayer .play i').classList.add('fa-pause')
+            disc.style.animationPlayState = 'running'
+
+            audio.src && audio.play()
+            document.querySelector('.musicPlayer .controls').classList.add('active')
+        } else {
+            audio.play()
+        }
+    }
+}
+
+const viewMusic = () => {
+    if (folder.classList.contains('active')) viewFolder()
+    if (addNoteButton.classList.contains('active')) return
+    if (musicPlayer.classList.contains('active')) {
+        volumeIndicator.classList.remove('menuOpen')
+    } else {
+        volumeIndicator.classList.add('menuOpen')
+    }
+
+    musicPlayer.classList.toggle('active')
+}
+
+const playTrack = (id) => {
+    const musicList = JSON.parse(localStorage.getItem('music'))
+    const findPlaying = musicList.find(x => x.playing == true)
+    const songToPlay = musicList.find(x => x.id == id)
+
+    if (findPlaying) {
+        if (findPlaying.id == songToPlay.id) {
+            const newMusicList = musicList.map(x => {
+                if (findPlaying.id == x.id) {
+                    return {
+                        ...x,
+                        playing: true
+                    }
+                } else {
+                    return {
+                        ...x,
+                        playing: false
+                    }
+                }
+            })
+    
+            localStorage.setItem('music', JSON.stringify(newMusicList))
+        } else {
+            const newMusicList = musicList.map(x => {
+                if (songToPlay.id == x.id) {
+                    return {
+                        ...x,
+                        playing: true
+                    }
+                } else {
+                    return {
+                        ...x,
+                        playing: false
+                    }
+                }
+            })
+    
+            localStorage.setItem('music', JSON.stringify(newMusicList))
+        }
+        
+    } else {
+        const newMusicList = musicList.map(x => x.id == id ? {...x, playing: true} : x)
+        localStorage.setItem('music', JSON.stringify(newMusicList))
+    }
+
+    const audio = document.querySelector('audio')
+
+    audio.src = songToPlay.url
+    themeName.innerHTML = songToPlay.title
+    audio.play()
+    
+    if (!document.querySelector('.musicPlayer .controls').classList.contains('active')) {
+        document.querySelector('.musicPlayer .play i').classList.remove('fa-play')
+        document.querySelector('.musicPlayer .play i').classList.add('fa-pause')
+        disc.style.animationPlayState = 'running'
+
+        document.querySelector('.musicPlayer .controls').classList.add('active')
+    }
+}
+
+const changeDiscVol = (e) => {
+    const currentAudio = document.querySelector('audio')
+
+    if (e.deltaY < 0) {
+        currentAudio.volume = currentAudio.volume != 1.0 ? Math.round((currentAudio.volume + 0.01) * 100) / 100 : 1
+    } else {
+        currentAudio.volume = currentAudio.volume != 0.0 ? Math.round((currentAudio.volume - 0.01) * 100) / 100 : 0
+    }
+
+    showVolume()
+}
+
+const showVolume = () => {
+    const currentVolume = document.querySelector('audio').volume
+    const volumeIcon = volumeIndicator.querySelector('i')
+    !volumeIndicator.classList.contains('active') && volumeIndicator.classList.add('active')
+    volumeIndicator.querySelector('.progress').style.width = `${currentVolume * 100}%`
+
+    if ((currentVolume * 100) == 0) {
+        volumeIcon.removeAttribute('class')
+        volumeIcon.setAttribute('class', 'fas fa-volume-xmark')
+    } else if ((currentVolume * 100) > 0 && (currentVolume * 100) < 50) {
+        volumeIcon.removeAttribute('class')
+        volumeIcon.setAttribute('class', 'fas fa-volume-low')
+    } else if ((currentVolume * 100) >= 50) {
+        volumeIcon.removeAttribute('class')
+        volumeIcon.setAttribute('class', 'fas fa-volume-high')
+    }
+    
+    clearTimeout(volTimer)
+
+    volTimer = setTimeout(() => {
+        volumeIndicator.classList.remove('active')
+    }, 1000)
+}
+
+const listMusic = () => {
+    const list = JSON.parse(localStorage.getItem('music')) || []
+    const currentAudio = document.querySelector('audio')
+
+    musicList.innerHTML = ''
+    musicList.insertAdjacentHTML('afterbegin',
+        `<div class="spinnerContainer">
+            <div class="spinnerWrapper">
+                <div class="spinner"></div>
+            </div>
+        </div>`
+    )
+
+    musicQuantity.innerHTML = `${list.length} of 20`
+
+    if (!list.length) {
+        musicList.insertAdjacentHTML('beforeend',
+            `<div class="noTracks">
+                <i class="fas fa-heart-circle-xmark"></i>
+                <span>You don't have music yet!</span>
+            </div>`
+        )
+
+        return
+    }
+
+    let counter = 1
+
+    list.forEach(({id, title, url}) => {
+        if (counter == 1) {
+            const isPlaying = list.find(x => x.playing == true)
+            !document.querySelector('.musicPlayer .controls').classList.contains('active') &&
+                (currentAudio.volume = 0.1)
+            
+            if (!isPlaying) {
+                const newMusicList = list.map(x => x.id == id ? {...x, playing: true} : x)
+                localStorage.setItem('music', JSON.stringify(newMusicList))
+
+                currentAudio.src = url
+                themeName.innerHTML = title
+
+                document.querySelector('.musicPlayer .controls').classList.contains('active') &&
+                    togglePlay()
+            } else {
+                if (document.querySelector('.musicPlayer .controls').classList.contains('active')) {
+                    playTrack(isPlaying.id)
+                } else {
+                    currentAudio.src = isPlaying.url
+                    themeName.innerHTML = isPlaying.title
+                }
+            }
+        }
+
+        musicList.insertAdjacentHTML('beforeend',
+            `<div class="item" title=${title} id=${id}>
+                <div class="trackInfo">
+                    <span class="trackNumber">${counter}.</span>
+                    <span class="trackTitle">${title}</span>
+                </div>
+                <div class="delete" title="${id}">
+                    <i class="fas fa-trash"></i>
+                </div>
+            </div>`
+        )
+
+        document.querySelector(`.musicList .list .item[id="${id}"]`)
+            .addEventListener('click', () => playTrack(id))
+        document.querySelector(`.item .delete[title="${id}"]`)
+            .addEventListener('click', (e) => {e.stopPropagation(), confirmDeleteTrack(id)})
+
+        counter++
+    })
+}
+
+listMusic()
+
+const deleteTrack = (id) => {
+    const musicSpinner = document.querySelector('.musicPlayer .list .spinnerContainer')
+    const list = JSON.parse(localStorage.getItem('music'))
+
+    uploadTrack.setAttribute('disabled', '')
+    musicSpinner.classList.add('active')
+
+    deleteMusic(id).then(() => {
+        const findPlaying = list.find(x => x.playing == true)
+
+        getMusic(uid).then(data => {
+            const musicList = data.map(x => {
+                if (findPlaying.id == x.id) {
+                    if (findPlaying.id == id) {
+                        return false
+                    }
+
+                    return {
+                        ...x,
+                        playing: true
+                    }
+                } else {
+                    return {
+                        ...x,
+                        playing: false
+                    }
+                }
+            })
+
+            localStorage.setItem('music', JSON.stringify(musicList))
+            uploadTrack.removeAttribute('disabled')
+            musicSpinner.classList.remove('active')
+            listMusic()
+        })
+    })
+}
+
+const confirmDeleteTrack = (id) => {
+    document.querySelector('.mainContainer').insertAdjacentHTML('afterbegin',
+        `<div class="confirmDelete">
+            <div class="modal">
+                <div class="content">
+                    <i class="fas fa-triangle-exclamation"></i>
+                    <p>Are you sure to delete this track?</p>
+                </div>
+                <div class="buttons">
+                    <button class="yes">Yes</button>
+                    <button class="no">No</button>
+                </div>
+            </div>
+        </div>`
+    )
+
+    const confirm = document.querySelector('.confirmDelete')
+
+    confirm.addEventListener('click', () => {
+        confirm.remove()
+    })
+    confirm.querySelector('.modal').addEventListener('click', (e) => e.stopPropagation())
+
+    confirm.querySelector('.yes').addEventListener('click', () => {
+        confirm.remove()
+        deleteTrack(id)
+    })
+    confirm.querySelector('.no').addEventListener('click', () => {
+        confirm.remove()
+    })
+}
+
+const processTrack = (e) => {
+    const musicSpinner = document.querySelector('.musicPlayer .list .spinnerContainer')
+    const audioList = localStorage.getItem('music') ?
+        JSON.parse(localStorage.getItem('music')) : []
+
+    if (audioList.length == 20) return
+
+    const audio = e.target.files[0]
+    const extension = audio.name.split('.').pop()
+    const title = audio.name.split(`.${extension}`).shift()
+    const size = Number((audio.size / (1024 ** 2)).toFixed(2))
+    const type = audio.type.match('audio.*')
+
+    if (size > 5) {
+        return
+    } else if (!type) {
+        return
+    }
+
+    const task = addMusic(audio, extension)
+
+    task.on('state_changed',
+        () => {
+            uploadTrack.setAttribute('disabled', '')
+            musicSpinner.classList.add('active')
+        },
+        (err) => {
+            console.log(err)
+        },
+        () => {
+            const reference = task.snapshot.ref._location.path_
+
+            getDownloadURL(task.snapshot.ref)
+            .then(url => {
+                newMusic({uid, title, url, reference}).then(() => {
+                    const findPlaying = audioList.find(x => x.playing == true)
+
+                    getMusic(uid).then(data => {
+                        const musicList = data.map(x => {
+                            if (findPlaying?.id == x.id) {
+                                return {
+                                    ...x,
+                                    playing: true
+                                }
+                            } else {
+                                return {
+                                    ...x,
+                                    playing: false
+                                }
+                            }
+                        })
+
+                        localStorage.setItem('music', JSON.stringify(musicList))
+                        uploadTrackInput.value = ''
+                        uploadTrack.removeAttribute('disabled')
+                        musicSpinner.classList.remove('active')
+                        listMusic()
+                    })
+                })
+            })
+        }
+    )
 }
 
 const viewFolder = () => {
     if (addNoteButton.classList.contains('active')) return
     if (document.querySelector('.tab.creating')) return
+    if (musicPlayer.classList.contains('active')) viewMusic()
 
-    folder.classList.contains('active') ?
-        document.querySelector('.files i').classList.replace('fa-folder-open', 'fa-folder') :
+    if (folder.classList.contains('active')) {
+        document.querySelector('.files i').classList.replace('fa-folder-open', 'fa-folder')
+        volumeIndicator.classList.remove('menuOpen')
+    } else {
         document.querySelector('.files i').classList.replace('fa-folder', 'fa-folder-open')
+        volumeIndicator.classList.add('menuOpen')
+    }
 
     folder.classList.toggle('active')
 }
 
-const closeFolder = () => {
+const closeMenu = () => {
     if (folder.classList.contains('active')) {
         folder.classList.toggle('active')
         document.querySelector('.files i').classList.replace('fa-folder-open', 'fa-folder')
+        volumeIndicator.classList.remove('menuOpen')
+    }
+    if (musicPlayer.classList.contains('active')) {
+        musicPlayer.classList.toggle('active')
+        volumeIndicator.classList.remove('menuOpen')
     }
 }
 
@@ -593,7 +948,7 @@ const createFile = (e) => {
 
     if (e.keyCode == 13) {
         const title = e.target.value
-        let notes = JSON.parse(localStorage.getItem('notes'))
+        const notes = JSON.parse(localStorage.getItem('notes')) || []
 
         const note = {
             uid,
@@ -611,6 +966,9 @@ const createFile = (e) => {
             checkNotes()
             addTab(title)
             checkTabs()
+
+            e.preventDefault()
+            textarea.focus()
         } else {
             switch (inputClass) {
                 case 'inputButton':
@@ -649,7 +1007,8 @@ const newFolderNote = () => {
 }
 
 const newButtonNote = () => {
-    if (folder.classList.contains('active')) return
+    if (folder.classList.contains('active')) viewFolder()
+    if (musicPlayer.classList.contains('active')) viewMusic()
     if (document.querySelector('.tab.creating')) return
 
     addNoteButton.classList.toggle('active')
@@ -752,9 +1111,17 @@ addNoteButton.addEventListener('click', newButtonNote)
 addNoteInput.addEventListener('click', (e) => e.stopPropagation())
 addNoteSave.addEventListener('keydown', createFile)
 addNoteClose.addEventListener('click', () => closeInput('button'))
-document.querySelector('.container1').addEventListener('click', closeFolder)
+document.querySelector('.container1').addEventListener('click', closeMenu)
 textarea.addEventListener('input', () => {previewText(textarea.value), autoSave()})
 newNote.addEventListener('click', newFolderNote)
 addNoteTab.addEventListener('click', newTabNote)
 addGuideNote.addEventListener('click', () => addNoteTab.click())
 closeWelcome && closeWelcome.addEventListener('click', removeWelcome)
+musicButton.addEventListener('click', viewMusic)
+playButton.addEventListener('click', togglePlay)
+prevButton.addEventListener('click', prevSong)
+nextButton.addEventListener('click', nextSong)
+uploadTrack.addEventListener('click', () => uploadTrackInput.click())
+uploadTrackInput.addEventListener('change', processTrack)
+document.querySelector('audio').addEventListener('ended', nextSong)
+disc.addEventListener('wheel', changeDiscVol)
