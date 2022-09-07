@@ -18,6 +18,7 @@
   --blockquote-bg: #3874b130;
   --divisor-color: #3874b130;
   --button-text: #eaeaea;
+  --floating-bg: #c2e3e9;
 }
 
 [data-theme=dark] {
@@ -39,6 +40,7 @@
   --blockquote-bg: #80cedb30;
   --divisor-color: #80cedb30;
   --button-text: #2b2b2b;
+  --floating-bg: #202032;
 }
 
 *,
@@ -752,6 +754,88 @@ body {
   height: 100%;
   width: 10%;
   background-color: var(--accent-color);
+}
+.mainContainer .floatingPlayer {
+  position: absolute;
+  bottom: 5em;
+  right: 2em;
+  width: 22em;
+  height: 10em;
+  z-index: 20;
+  background-color: var(--floating-bg);
+  color: var(--accent-color);
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 1em;
+  user-select: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.2s ease-out;
+  box-shadow: 0 0 20px 0 var(--floating-bg);
+}
+.mainContainer .floatingPlayer.active {
+  opacity: 1;
+  visibility: visible;
+}
+.mainContainer .floatingPlayer .cover {
+  width: 40%;
+}
+.mainContainer .floatingPlayer .cover .fa-compact-disc {
+  font-size: 6em;
+  animation: disc 3s linear infinite forwards;
+  animation-play-state: paused;
+}
+.mainContainer .floatingPlayer .wrapper {
+  width: 60%;
+  height: 100%;
+  padding-block: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+.mainContainer .floatingPlayer .wrapper .themeName {
+  width: 100%;
+  display: flex;
+  gap: 0.5em;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1em;
+}
+.mainContainer .floatingPlayer .wrapper .themeName span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 80%;
+}
+.mainContainer .floatingPlayer .wrapper .controls {
+  height: 3em;
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8em;
+  position: relative;
+}
+.mainContainer .floatingPlayer .wrapper .controls .prev, .mainContainer .floatingPlayer .wrapper .controls .play, .mainContainer .floatingPlayer .wrapper .controls .next {
+  padding: 0.5em;
+  width: max-content;
+  height: max-content;
+  border-radius: 10px;
+  transition: 0.2s ease-out;
+}
+.mainContainer .floatingPlayer .wrapper .controls .prev:hover, .mainContainer .floatingPlayer .wrapper .controls .play:hover, .mainContainer .floatingPlayer .wrapper .controls .next:hover {
+  background-color: var(--folders-bg-hover);
+  cursor: pointer;
+}
+.mainContainer .floatingPlayer .wrapper .controls .prev i, .mainContainer .floatingPlayer .wrapper .controls .play i, .mainContainer .floatingPlayer .wrapper .controls .next i {
+  font-size: 1.8em;
+}
+.mainContainer .floatingPlayer .wrapper .controls .play {
+  padding-inline: 0.8em;
 }
 .mainContainer .container1 {
   width: calc(100% - 4em);

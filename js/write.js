@@ -52,11 +52,17 @@ const addNoteTab = document.querySelector('header .addTab')
 const addGuideNote = document.querySelector('.guide .addNote')
 const musicButton = document.querySelector('.sidebar .music')
 const musicPlayer = document.querySelector('.musicPlayer')
+const floatingPlayer = document.querySelector('.floatingPlayer')
 const disc = document.querySelector('.musicPlayer .fa-compact-disc')
+const disc2 = document.querySelector('.floatingPlayer .fa-compact-disc')
 const themeName = document.querySelector('.musicPlayer .themeName')
+const themeName2 = document.querySelector('.floatingPlayer .themeName span')
 const playButton = document.querySelector('.musicPlayer .play')
+const playButton2 = document.querySelector('.floatingPlayer .play')
 const prevButton = document.querySelector('.musicPlayer .prev')
+const prevButton2 = document.querySelector('.floatingPlayer .prev')
 const nextButton = document.querySelector('.musicPlayer .next')
+const nextButton2 = document.querySelector('.floatingPlayer .next')
 const musicList = document.querySelector('.musicPlayer .musicList .list')
 const musicQuantity = document.querySelector('.musicPlayer .quantity')
 const uploadTrack = document.querySelector('.musicPlayer .uploadTrack')
@@ -390,19 +396,29 @@ const toggleView = () => {
     textarea.focus()
 }
 
+const toggleFloating = () => {
+    floatingPlayer.classList.toggle('active')
+}
+
 const togglePlay = () => {
     const audio = document.querySelector('audio')
 
     if (!document.querySelector('.musicPlayer .controls').classList.contains('active')) {
         document.querySelector('.musicPlayer .play i').classList.remove('fa-play')
         document.querySelector('.musicPlayer .play i').classList.add('fa-pause')
+        document.querySelector('.floatingPlayer .play i').classList.remove('fa-play')
+        document.querySelector('.floatingPlayer .play i').classList.add('fa-pause')
         disc.style.animationPlayState = 'running'
+        disc2.style.animationPlayState = 'running'
 
         audio.src && audio.play()
     } else {
         document.querySelector('.musicPlayer .play i').classList.add('fa-play')
         document.querySelector('.musicPlayer .play i').classList.remove('fa-pause')
+        document.querySelector('.floatingPlayer .play i').classList.add('fa-play')
+        document.querySelector('.floatingPlayer .play i').classList.remove('fa-pause')
         disc.style.animationPlayState = 'paused'
+        disc2.style.animationPlayState = 'paused'
 
         audio.src && audio.pause()
     }
@@ -436,11 +452,15 @@ const prevSong = () => {
 
         audio.src = musicList[musicList.length - 1].url
         themeName.innerHTML = musicList[musicList.length - 1].title
+        themeName2.innerHTML = musicList[musicList.length - 1].title
         
         if (!document.querySelector('.musicPlayer .controls').classList.contains('active')) {
             document.querySelector('.musicPlayer .play i').classList.remove('fa-play')
             document.querySelector('.musicPlayer .play i').classList.add('fa-pause')
+            document.querySelector('.floatingPlayer .play i').classList.remove('fa-play')
+            document.querySelector('.floatingPlayer .play i').classList.add('fa-pause')
             disc.style.animationPlayState = 'running'
+            disc2.style.animationPlayState = 'running'
 
             audio.src && audio.play()
 
@@ -469,11 +489,15 @@ const prevSong = () => {
         
         audio.src = musicList[currentIndex - 1].url
         themeName.innerHTML = musicList[currentIndex - 1].title
+        themeName2.innerHTML = musicList[currentIndex - 1].title
 
         if (!document.querySelector('.musicPlayer .controls').classList.contains('active')) {
             document.querySelector('.musicPlayer .play i').classList.remove('fa-play')
             document.querySelector('.musicPlayer .play i').classList.add('fa-pause')
+            document.querySelector('.floatingPlayer .play i').classList.remove('fa-play')
+            document.querySelector('.floatingPlayer .play i').classList.add('fa-pause')
             disc.style.animationPlayState = 'running'
+            disc2.style.animationPlayState = 'running'
 
             audio.src && audio.play()
             document.querySelector('.musicPlayer .controls').classList.add('active')
@@ -509,11 +533,15 @@ const nextSong = () => {
 
         audio.src = musicList[0].url
         themeName.innerHTML = musicList[0].title
+        themeName2.innerHTML = musicList[0].title
         
         if (!document.querySelector('.musicPlayer .controls').classList.contains('active')) {
             document.querySelector('.musicPlayer .play i').classList.remove('fa-play')
             document.querySelector('.musicPlayer .play i').classList.add('fa-pause')
+            document.querySelector('.floatingPlayer .play i').classList.remove('fa-play')
+            document.querySelector('.floatingPlayer .play i').classList.add('fa-pause')
             disc.style.animationPlayState = 'running'
+            disc2.style.animationPlayState = 'running'
 
             audio.src && audio.play()
 
@@ -542,11 +570,15 @@ const nextSong = () => {
         
         audio.src = musicList[currentIndex + 1].url
         themeName.innerHTML = musicList[currentIndex + 1].title
+        themeName2.innerHTML = musicList[currentIndex + 1].title
 
         if (!document.querySelector('.musicPlayer .controls').classList.contains('active')) {
             document.querySelector('.musicPlayer .play i').classList.remove('fa-play')
             document.querySelector('.musicPlayer .play i').classList.add('fa-pause')
+            document.querySelector('.floatingPlayer .play i').classList.remove('fa-play')
+            document.querySelector('.floatingPlayer .play i').classList.add('fa-pause')
             disc.style.animationPlayState = 'running'
+            disc2.style.animationPlayState = 'running'
 
             audio.src && audio.play()
             document.querySelector('.musicPlayer .controls').classList.add('active')
@@ -565,6 +597,7 @@ const viewMusic = () => {
         volumeIndicator.classList.add('menuOpen')
     }
 
+    toggleFloating()
     musicPlayer.classList.toggle('active')
 }
 
@@ -617,12 +650,16 @@ const playTrack = (id) => {
 
     audio.src = songToPlay.url
     themeName.innerHTML = songToPlay.title
+    themeName2.innerHTML = songToPlay.title
     audio.play()
     
     if (!document.querySelector('.musicPlayer .controls').classList.contains('active')) {
         document.querySelector('.musicPlayer .play i').classList.remove('fa-play')
         document.querySelector('.musicPlayer .play i').classList.add('fa-pause')
+        document.querySelector('.floatingPlayer .play i').classList.remove('fa-play')
+        document.querySelector('.floatingPlayer .play i').classList.add('fa-pause')
         disc.style.animationPlayState = 'running'
+        disc2.style.animationPlayState = 'running'
 
         document.querySelector('.musicPlayer .controls').classList.add('active')
     }
@@ -704,6 +741,7 @@ const listMusic = () => {
 
                 currentAudio.src = url
                 themeName.innerHTML = title
+                themeName2.innerHTML = title
 
                 document.querySelector('.musicPlayer .controls').classList.contains('active') &&
                     togglePlay()
@@ -713,6 +751,7 @@ const listMusic = () => {
                 } else {
                     currentAudio.src = isPlaying.url
                     themeName.innerHTML = isPlaying.title
+                    themeName2.innerHTML = isPlaying.title
                 }
             }
         }
@@ -898,6 +937,7 @@ const closeMenu = () => {
     if (musicPlayer.classList.contains('active')) {
         musicPlayer.classList.toggle('active')
         volumeIndicator.classList.remove('menuOpen')
+        toggleFloating()
     }
 }
 
@@ -1119,9 +1159,13 @@ addGuideNote.addEventListener('click', () => addNoteTab.click())
 closeWelcome && closeWelcome.addEventListener('click', removeWelcome)
 musicButton.addEventListener('click', viewMusic)
 playButton.addEventListener('click', togglePlay)
+playButton2.addEventListener('click', togglePlay)
 prevButton.addEventListener('click', prevSong)
+prevButton2.addEventListener('click', prevSong)
 nextButton.addEventListener('click', nextSong)
+nextButton2.addEventListener('click', nextSong)
 uploadTrack.addEventListener('click', () => uploadTrackInput.click())
 uploadTrackInput.addEventListener('change', processTrack)
 document.querySelector('audio').addEventListener('ended', nextSong)
 disc.addEventListener('wheel', changeDiscVol)
+disc2.addEventListener('wheel', changeDiscVol)
