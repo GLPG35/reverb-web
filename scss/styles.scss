@@ -16,6 +16,8 @@
 
         h1 {
             font-weight: 900;
+            border-right: 3px solid var(--accent-color);
+            animation: writing 1s linear infinite;
 
             span {
                 position: relative;
@@ -34,6 +36,8 @@
 
         h2 {
             font-weight: 300;
+            border-right: 3px solid var(--accent-color);
+            animation: writing 1s linear infinite;
         }
     }
 }

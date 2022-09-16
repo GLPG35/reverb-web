@@ -18,8 +18,15 @@
     --delete-hover: #c9143e;
     --blockquote-bg: #3874b130;
     --divisor-color: #3874b130;
+    --button-bg: #282838;
     --button-text: #eaeaea;
     --floating-bg: #c2e3e9;
+    --config-bg: #c2e3e9;
+    --config-side: #edfcff;
+    --config-hover: #b7d6dc;
+    --config-subtitle: #2b2b2b80;
+    --config-toggle: #90c5ce;
+    --checked-config: #2d9c5f;
 }
 
 [data-theme="dark"] {
@@ -40,8 +47,15 @@
     --delete-hover: #e22b55;
     --blockquote-bg: #80cedb30;
     --divisor-color: #80cedb30;
+    --button-bg: #eaeaea;
     --button-text: #2b2b2b;
     --floating-bg: #202032;
+    --config-bg: #191929;
+    --config-side: #202032;
+    --config-hover: #28283e;
+    --config-subtitle: #e2f5f780;
+    --config-toggle: #28283e;
+    --checked-config: #2d9c5f;
 }
 
 *,
@@ -60,6 +74,48 @@
         border-radius: 50vh;
         transition: 0.2s ease-out;
     }
+}
+
+@keyframes modalContainer {
+    0% {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    100% {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+@keyframes modal {
+    0% {
+        transform: scale(0);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes disc {
+    from {
+        transform: rotate(0);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes spinnerRotate {
+    0% {
+        transform: rotate(0);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    } 
 }
 
 body {

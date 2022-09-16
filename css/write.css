@@ -17,8 +17,15 @@
   --delete-hover: #c9143e;
   --blockquote-bg: #3874b130;
   --divisor-color: #3874b130;
+  --button-bg: #282838;
   --button-text: #eaeaea;
   --floating-bg: #c2e3e9;
+  --config-bg: #c2e3e9;
+  --config-side: #edfcff;
+  --config-hover: #b7d6dc;
+  --config-subtitle: #2b2b2b80;
+  --config-toggle: #90c5ce;
+  --checked-config: #2d9c5f;
 }
 
 [data-theme=dark] {
@@ -39,8 +46,15 @@
   --delete-hover: #e22b55;
   --blockquote-bg: #80cedb30;
   --divisor-color: #80cedb30;
+  --button-bg: #eaeaea;
   --button-text: #2b2b2b;
   --floating-bg: #202032;
+  --config-bg: #191929;
+  --config-side: #202032;
+  --config-hover: #28283e;
+  --config-subtitle: #e2f5f780;
+  --config-toggle: #28283e;
+  --checked-config: #2d9c5f;
 }
 
 *,
@@ -58,12 +72,6 @@
   background-color: var(--accent-color);
   border-radius: 50vh;
   transition: 0.2s ease-out;
-}
-
-body {
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  font-family: "Open Sans", sans-serif;
 }
 
 @keyframes modalContainer {
@@ -100,6 +108,12 @@ body {
     transform: rotate(360deg);
   }
 }
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: "Open Sans", sans-serif;
+}
+
 .mainContainer {
   width: 100%;
   height: 100vh;
@@ -162,6 +176,7 @@ body {
   border-radius: 50vh;
   border: none;
   outline: none;
+  background-color: var(--button-bg);
   color: var(--button-text);
   font-family: "Open Sans", sans-serif;
   font-weight: 600;
@@ -200,6 +215,24 @@ body {
 .mainContainer .sidebar i {
   font-size: 1.5em;
   color: var(--accent-color);
+  transition: 0.2s ease-out;
+}
+.mainContainer .sidebar .home {
+  height: 3em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mainContainer .sidebar .home:hover svg path {
+  stroke: var(--accent-color-hover);
+  fill: var(--accent-color-hover);
+}
+.mainContainer .sidebar .home svg {
+  width: 1.8em;
+}
+.mainContainer .sidebar .home svg path {
+  stroke: var(--accent-color);
+  fill: var(--accent-color);
   transition: 0.2s ease-out;
 }
 .mainContainer .sidebar .add {
@@ -758,7 +791,9 @@ body {
 .mainContainer .floatingPlayer {
   position: absolute;
   bottom: 5em;
-  right: 2em;
+  right: 3em;
+  top: initial;
+  left: initial;
   width: 22em;
   height: 10em;
   z-index: 20;
@@ -779,6 +814,10 @@ body {
   opacity: 1;
   visibility: visible;
 }
+.mainContainer .floatingPlayer.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
 .mainContainer .floatingPlayer .cover {
   width: 40%;
 }
@@ -796,6 +835,23 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.5em;
+  position: relative;
+}
+.mainContainer .floatingPlayer .wrapper .close {
+  position: absolute;
+  top: 0.5em;
+  right: -0.5em;
+  width: 2em;
+  height: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  transition: 0.2s ease-out;
+}
+.mainContainer .floatingPlayer .wrapper .close:hover {
+  cursor: pointer;
+  background-color: var(--folders-bg-hover);
 }
 .mainContainer .floatingPlayer .wrapper .themeName {
   width: 100%;
@@ -836,6 +892,226 @@ body {
 }
 .mainContainer .floatingPlayer .wrapper .controls .play {
   padding-inline: 0.8em;
+}
+.mainContainer .configContainer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(12, 12, 12, 0.7450980392);
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.2s ease-out;
+}
+.mainContainer .configContainer.active {
+  visibility: visible;
+  opacity: 1;
+}
+.mainContainer .configContainer.active .configModal {
+  transform: scale(1);
+  opacity: 1;
+}
+.mainContainer .configContainer .configModal {
+  width: 90%;
+  height: 80%;
+  background-color: var(--config-bg);
+  border-radius: 15px;
+  display: flex;
+  overflow: hidden;
+  transition: 0.3s ease-in-out;
+  opacity: 0;
+  transform: scale(0.5);
+}
+.mainContainer .configContainer .configModal .options {
+  width: 20%;
+  height: 100%;
+  background-color: var(--config-side);
+  padding-top: 1em;
+}
+.mainContainer .configContainer .configModal .options .title {
+  font-size: 1.2em;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5em;
+}
+.mainContainer .configContainer .configModal .options .title::before {
+  position: absolute;
+  content: "";
+  bottom: -0.5em;
+  height: 2px;
+  width: 30%;
+  background-color: var(--accent-color);
+}
+.mainContainer .configContainer .configModal .options .op {
+  width: 100%;
+  height: 3em;
+  padding-inline: 1.5em;
+  display: flex;
+  align-items: center;
+  transition: 0.2s ease-out;
+  gap: 0.5em;
+}
+.mainContainer .configContainer .configModal .options .op:hover {
+  background-color: var(--config-hover);
+  cursor: pointer;
+}
+.mainContainer .configContainer .configModal .details {
+  width: 80%;
+  height: 100%;
+}
+.mainContainer .configContainer .configModal .details .view {
+  padding: 1em;
+  display: none;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+}
+.mainContainer .configContainer .configModal .details .view.active {
+  display: flex;
+}
+.mainContainer .configContainer .configModal .details .view .title {
+  width: 100%;
+  height: 8%;
+  font-size: 1.2em;
+}
+.mainContainer .configContainer .configModal .details .view .content {
+  width: 100%;
+  height: 92%;
+  display: block;
+  overflow-y: auto;
+}
+.mainContainer .configContainer .configModal .details .view .content .subtitle {
+  width: 100%;
+  height: 2em;
+  color: var(--config-subtitle);
+  display: flex;
+  align-items: center;
+}
+.mainContainer .configContainer .configModal .details .view .content .option {
+  width: 100%;
+  height: 4em;
+  padding-inline: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+.mainContainer .configContainer .configModal .details .view .content .option:last-child::before {
+  opacity: 0;
+  visibility: hidden;
+}
+.mainContainer .configContainer .configModal .details .view .content .option::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--accent-color);
+}
+.mainContainer .configContainer .configModal .details .view .content .option .toggleWrapper {
+  height: 50%;
+  aspect-ratio: 2/1;
+  border-radius: 50vh;
+  overflow: hidden;
+}
+.mainContainer .configContainer .configModal .details .view .content .option .toggleWrapper input {
+  display: none;
+}
+.mainContainer .configContainer .configModal .details .view .content .option .toggleWrapper input:checked ~ .toggle {
+  background-color: var(--checked-config);
+}
+.mainContainer .configContainer .configModal .details .view .content .option .toggleWrapper input:checked ~ .toggle .circle {
+  transform: translateX(calc(150% - 0.05em));
+}
+.mainContainer .configContainer .configModal .details .view .content .option .toggleWrapper .toggle {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-color: var(--config-toggle);
+  display: flex;
+  align-items: center;
+  padding-inline: 0.3em;
+  transition: 0.2s ease-out;
+}
+.mainContainer .configContainer .configModal .details .view .content .option .toggleWrapper .toggle label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+}
+.mainContainer .configContainer .configModal .details .view .content .option .toggleWrapper .toggle label:hover {
+  cursor: pointer;
+}
+.mainContainer .configContainer .configModal .details .view .content .option .toggleWrapper .toggle .circle {
+  height: 70%;
+  aspect-ratio: 1/1;
+  background-color: var(--text-color);
+  border-radius: 50%;
+  transition: 0.3s cubic-bezier(0.47, 1.64, 0.41, 0.8);
+  z-index: 5;
+}
+.mainContainer .configContainer .configModal .details .view .content .option .select {
+  height: 50%;
+  width: max-content;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.mainContainer .configContainer .configModal .details .view .content .option .select select {
+  appearance: none;
+  width: auto;
+  height: 100%;
+  padding-left: 0.8em;
+  padding-right: 2em;
+  border: none;
+  outline: none;
+  border-radius: 50vh;
+  background-color: var(--config-toggle);
+  color: var(--text-color);
+}
+.mainContainer .configContainer .configModal .details .view .content .option .select select:hover {
+  cursor: pointer;
+}
+.mainContainer .configContainer .configModal .details .view .content .option .select select:focus + i {
+  transform: rotate(-90deg);
+}
+.mainContainer .configContainer .configModal .details .view .content .option .select i {
+  position: absolute;
+  right: 1em;
+  font-size: 0.8em;
+  transition: 0.2s ease-in-out;
+  pointer-events: none;
+}
+.mainContainer .configContainer .configModal .details .view .content .option .color input {
+  border: none;
+  outline: none;
+  appearance: none;
+  width: max-content;
+  cursor: pointer;
+  background-color: transparent;
+}
+.mainContainer .configContainer .configModal .details .view .content .option .color input::-webkit-color-swatch {
+  border-radius: 50%;
+  border: none;
+  width: 2em;
+  height: 2em;
+}
+.mainContainer .configContainer .configModal .details .view .content .option .number input {
+  border: none;
+  outline: none;
+  background-color: var(--config-toggle);
+  color: var(--text-color);
+  padding: 0.5em 1em;
+  border-radius: 50vh;
+  transition: 0.2s ease-out;
 }
 .mainContainer .container1 {
   width: calc(100% - 4em);

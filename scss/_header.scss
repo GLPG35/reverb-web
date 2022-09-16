@@ -20,6 +20,15 @@
     box-sizing: border-box;
 }
 
+@keyframes writing {
+    from, to {
+        border-color: transparent;
+    }
+    50% {
+        border-color: var(--accent-color);
+    }
+}
+
 body {
     background-color: var(--bg-color);
     color: var(--text-color);

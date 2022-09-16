@@ -1,0 +1,208 @@
+[
+    {
+        "light": {
+            "bgColor": {
+                "description": "Background Color",
+                "color": "#e2f5f7"
+            },
+            "textColor": {
+                "description": "Foreground Color",
+                "color": "#2b2b2b"
+            },
+            "accentColor": {
+                "description": "Accent Color",
+                "color": "#3874b1"
+            },
+            "accentColorHover": {
+                "description": "Accent Color Hover",
+                "color": "#104171"
+            },
+            "sidebarBg": {
+                "description": "Sidebar Background Color",
+                "color": "#c2e3e9"
+            },
+            "closeBg": {
+                "description": "Close Button Color",
+                "color": "#b9e1e5"
+            },
+            "foldersBg": {
+                "description": "Folders Background Color",
+                "color": "#edfcff"
+            },
+            "foldersBgHover": {
+                "description": "Folders Background Color Hover",
+                "color": "#b7d6dc"
+            },
+            "foldersColor": {
+                "description": "Folders Foreground Color",
+                "color": "#95d2dd"
+            },
+            "foldersInputBg": {
+                "description": "Folders Input Background Color",
+                "color": "#c2e4ec"
+            },
+            "foldersInputHover": {
+                "description": "Folders Input Background Color Hover",
+                "color": "#acd7e1"
+            },
+            "buttonInputBg": {
+                "description": "Input Button Background Color",
+                "color": "#9bd6e0"
+            },
+            "deleteColor": {
+                "description": "Delete Button Color",
+                "color": "#ff295b"
+            },
+            "deleteColorHover": {
+                "description": "Delete Button Color Hover",
+                "color": "#c9143e"
+            },
+            "blockquoteBg": {
+                "description": "Blockquote Background Color",
+                "color": "#3874b130"
+            },
+            "divisorColor": {
+                "description": "Divisor Color",
+                "color": "#3874b130"
+            },
+            "guideColor": {
+                "description": "Guide Color",
+                "color": "#97cdd3"
+            },
+            "buttonBg": {
+                "description": "Modal Button Background Color",
+                "color": "#282838"
+            },
+            "buttonText": {
+                "description": "Modal Button Foreground Color",
+                "color": "#eaeaea"
+            },
+            "floatingBg": {
+                "description": "Floating Music Player Background Color",
+                "color": "#c2e3e9"
+            },
+            "configBg": {
+                "description": "Settings Background Color",
+                "color": "#c2e3e9"
+            },
+            "configSide": {
+                "description": "Settings Side Background Color",
+                "color": "#edfcff"
+            },
+            "configHover": {
+                "description": "Settings Hover Color",
+                "color": "#b7d6dc"
+            },
+            "configToggle": {
+                "description": "Settings Option Background Color",
+                "color": "#90c5ce"
+            },
+            "checkedConfig": {
+                "description": "Settings Option Checked Color",
+                "color": "#2d9c5f"
+            }
+        },
+        "dark": {
+            "bgColor": {
+                "description": "Background Color",
+                "color": "#282838"
+            },
+            "textColor": {
+                "description": "Foreground Color",
+                "color": "#e2f5f7"
+            },
+            "accentColor": {
+                "description": "Accent Color",
+                "color": "#80cedb"
+            },
+            "accentColorHover": {
+                "description": "Accent Color Hover",
+                "color": "#2293a7"
+            },
+            "sidebarBg": {
+                "description": "Sidebar Background Color",
+                "color": "#191929"
+            },
+            "closeBg": {
+                "description": "Close Button Color",
+                "color": "#4f4f6a"
+            },
+            "foldersBg": {
+                "description": "Folders Background Color",
+                "color": "#202032"
+            },
+            "foldersBgHover": {
+                "description": "Folders Background Color Hover",
+                "color": "#28283e"
+            },
+            "foldersColor": {
+                "description": "Folders Foreground Color",
+                "color": "#383852"
+            },
+            "foldersInputBg": {
+                "description": "Folders Input Background Color",
+                "color": "#41415b"
+            },
+            "foldersInputHover": {
+                "description": "Folders Input Background Color Hover",
+                "color": "#53537d"
+            },
+            "buttonInputBg": {
+                "description": "Input Button Background Color",
+                "color": "#41415b"
+            },
+            "deleteColor": {
+                "description": "Delete Button Color",
+                "color": "#fd4872"
+            },
+            "deleteColorHover": {
+                "description": "Delete Button Color Hover",
+                "color": "#e22b55"
+            },
+            "blockquoteBg": {
+                "description": "Blockquote Background Color",
+                "color": "#80cedb30"
+            },
+            "divisorColor": {
+                "description": "Divisor Color",
+                "color": "#80cedb30"
+            },
+            "guideColor": {
+                "description": "Guide Color",
+                "color": "#191929"
+            },
+            "buttonBg": {
+                "description": "Modal Button Background Color",
+                "color": "#eaeaea"
+            },
+            "buttonText": {
+                "description": "Modal Button Foreground Color",
+                "color": "#2b2b2b"
+            },
+            "floatingBg": {
+                "description": "Floating Music Player Background Color",
+                "color": "#202032"
+            },
+            "configBg": {
+                "description": "Settings Background Color",
+                "color": "#191929"
+            },
+            "configSide": {
+                "description": "Settings Side Background Color",
+                "color": "#202032"
+            },
+            "configHover": {
+                "description": "Settings Hover Color",
+                "color": "#28283e"
+            },
+            "configToggle": {
+                "description": "Settings Option Background Color",
+                "color": "#28283e"
+            },
+            "checkedConfig": {
+                "description": "Settings Option Checked Color",
+                "color": "#2d9c5f"
+            }
+        } 
+    }
+]

@@ -2,8 +2,9 @@ import { addMusic, addNote, getMusic, newMusic, deleteMusic } from './firebase/c
 import { getDownloadURL } from "https://www.gstatic.com/firebasejs/9.9.3/firebase-storage.js"
 
 const toggleViewButton = document.querySelector('.toggleView')
-let noWelcome = localStorage.getItem('noWelcome') ? localStorage.getItem('noWelcome') : false
-let welcomeContent = localStorage.getItem('welcomeContent') ? localStorage.getItem('welcomeContent') : false
+let noWelcome = JSON.parse(localStorage.getItem('noWelcome')) || false
+let welcomeContent = localStorage.getItem('welcomeContent') || false
+let themeList = JSON.parse(localStorage.getItem('themeList')) || false
 
 if (!noWelcome) {
     const tabs = document.querySelector('.container1 .tabs')
@@ -39,6 +40,7 @@ const textarea = document.querySelector('.document .textarea')
 const preview = document.querySelector('.preview')
 const toggleViewIcon = document.querySelector('.toggleView i')
 const rDocument = document.querySelector('.document')
+const homeButton = document.querySelector('.home')
 const viewFiles = document.querySelector('.files')
 const addNoteButton = document.querySelector('.sidebar .add')
 const addNoteInput = document.querySelector('.sidebar .add .newNote')
@@ -53,6 +55,7 @@ const addGuideNote = document.querySelector('.guide .addNote')
 const musicButton = document.querySelector('.sidebar .music')
 const musicPlayer = document.querySelector('.musicPlayer')
 const floatingPlayer = document.querySelector('.floatingPlayer')
+const closeFloating = document.querySelector('.floatingPlayer .close')
 const disc = document.querySelector('.musicPlayer .fa-compact-disc')
 const disc2 = document.querySelector('.floatingPlayer .fa-compact-disc')
 const themeName = document.querySelector('.musicPlayer .themeName')
@@ -68,8 +71,15 @@ const musicQuantity = document.querySelector('.musicPlayer .quantity')
 const uploadTrack = document.querySelector('.musicPlayer .uploadTrack')
 const uploadTrackInput = document.querySelector('.musicPlayer input')
 const volumeIndicator = document.querySelector('.volumeIndicator')
+const configButton = document.querySelector('.config')
+const configContainer = document.querySelector('.configContainer')
+const configModal = configContainer.querySelector('.configModal')
+const configOptions = configModal.querySelectorAll('.op')
+const configThemes = configModal.querySelector('.appearance .content')
+const showFloatingToggle = configModal.querySelector('.music #showFloating')
+const floatingPosition = configModal.querySelector('.music #floatingPosition')
 let volTimer
-const uid = localStorage.getItem('uid') ? localStorage.getItem('uid') :
+const uid = localStorage.getItem('uid') ||
     (localStorage.setItem('uid', Date.now()), localStorage.getItem('uid'))
 
 const checkNotes = () => {
@@ -402,6 +412,7 @@ const toggleFloating = () => {
 
 const togglePlay = () => {
     const audio = document.querySelector('audio')
+    if (!audio.src) return
 
     if (!document.querySelector('.musicPlayer .controls').classList.contains('active')) {
         document.querySelector('.musicPlayer .play i').classList.remove('fa-play')
@@ -428,31 +439,37 @@ const togglePlay = () => {
 
 const prevSong = () => {
     const audio = document.querySelector('audio')
+    if (!audio.src) return
     const musicList = JSON.parse(localStorage.getItem('music')) || []
     const currentIndex = musicList.findIndex(x => x.playing == true)
-    
+
     if (currentIndex == 0) {
-        const newMusicList = musicList.map(x => {
-            if (x.playing == true) {
-                return {
-                    ...x,
-                    playing: false
+        if (musicList.length != 1) {
+            const newMusicList = musicList.map(x => {
+                if (x.playing == true) {
+                    return {
+                        ...x,
+                        playing: false
+                    }
+                } else if (x.id == musicList[musicList.length - 1].id) {
+                    return {
+                        ...x,
+                        playing: true
+                    }
+                } else {
+                    return x
                 }
-            } else if (x.id == musicList[musicList.length - 1].id) {
-                return {
-                    ...x,
-                    playing: true
-                }
-            } else {
-                return x
-            }
-        })
+            })
 
-        localStorage.setItem('music', JSON.stringify(newMusicList))
+            localStorage.setItem('music', JSON.stringify(newMusicList))
 
-        audio.src = musicList[musicList.length - 1].url
-        themeName.innerHTML = musicList[musicList.length - 1].title
-        themeName2.innerHTML = musicList[musicList.length - 1].title
+            audio.src = musicList[musicList.length - 1].url
+            themeName.innerHTML = musicList[musicList.length - 1].title
+            themeName2.innerHTML = musicList[musicList.length - 1].title
+        } else {
+            localStorage.setItem('music', JSON.stringify(musicList))
+            audio.src = musicList[0].url
+        }
         
         if (!document.querySelector('.musicPlayer .controls').classList.contains('active')) {
             document.querySelector('.musicPlayer .play i').classList.remove('fa-play')
@@ -509,6 +526,7 @@ const prevSong = () => {
 
 const nextSong = () => {
     const audio = document.querySelector('audio')
+    if (!audio.src) return
     const musicList = JSON.parse(localStorage.getItem('music')) || []
     const currentIndex = musicList.findIndex(x => x.playing == true)
     
@@ -600,6 +618,42 @@ const viewMusic = () => {
     toggleFloating()
     musicPlayer.classList.toggle('active')
 }
+
+const hideFloating = () => {
+    localStorage.setItem('hiddenFloating', true)
+    floatingPlayer.style.display = 'none'
+
+    showFloatingToggle.checked = false
+}
+
+const checkFloating = () => {
+    const isHidden = JSON.parse(localStorage.getItem('hiddenFloating')) || false
+    const position = localStorage.getItem('floatingPosition') || 'br'
+    const positionList = {
+        'tl': { 'top': '5em', 'right': 'initial', 'bottom': 'initial', 'left': '6em' },
+        'tm': { 'top': '5em', 'right': 'initial', 'bottom': 'initial', 'left': 'calc(50vw - 11em)' },
+        'tr': { 'top': '5em', 'right': '3em', 'bottom': 'initial', 'left': 'initial' },
+        'rm': { 'top': 'calc(50vh - 5em)', 'right': '3em', 'bottom': 'initial', 'left': 'initial' },
+        'br': { 'top': 'initial', 'right': '3em', 'bottom': '5em', 'left': 'initial' },
+        'bm': { 'top': 'initial', 'right': 'calc(50vw - 11em)', 'bottom': '5em', 'left': 'initial' },
+        'bl': { 'top': 'initial', 'right': 'initial', 'bottom': '5em', 'left': '6em' },
+        'lm': { 'top': 'initial', 'right': 'initial', 'bottom': 'calc(50vh - 5em)', 'left': '6em' }
+    }
+    const currentPosition = positionList[position]
+
+    if (isHidden) {
+        floatingPlayer.style.display = 'none'
+    } else {
+        floatingPlayer.style.display = 'flex'
+    }
+
+    floatingPlayer.style.top = currentPosition.top
+    floatingPlayer.style.right = currentPosition.right
+    floatingPlayer.style.bottom = currentPosition.bottom
+    floatingPlayer.style.left = currentPosition.left
+}
+
+checkFloating()
 
 const playTrack = (id) => {
     const musicList = JSON.parse(localStorage.getItem('music'))
@@ -724,6 +778,12 @@ const listMusic = () => {
             </div>`
         )
 
+        currentAudio.removeAttribute('src')
+        themeName.innerHTML = ''
+        themeName2.innerHTML = ''
+        !floatingPlayer.classList.contains('hidden') &&
+            floatingPlayer.classList.add('hidden')
+
         return
     }
 
@@ -775,6 +835,9 @@ const listMusic = () => {
 
         counter++
     })
+
+    floatingPlayer.classList.contains('hidden') &&
+        floatingPlayer.classList.remove('hidden')
 }
 
 listMusic()
@@ -850,8 +913,7 @@ const confirmDeleteTrack = (id) => {
 
 const processTrack = (e) => {
     const musicSpinner = document.querySelector('.musicPlayer .list .spinnerContainer')
-    const audioList = localStorage.getItem('music') ?
-        JSON.parse(localStorage.getItem('music')) : []
+    const audioList = JSON.parse(localStorage.getItem('music')) || []
 
     if (audioList.length == 20) return
 
@@ -962,6 +1024,80 @@ if (!noWelcome && !welcomeContent) {
         
         changeTab(tabTitle)
     }
+}
+
+const floatingPlayerState = () => {
+    const state = JSON.parse(localStorage.getItem('hiddenFloating')) || false
+
+    if (!state) {
+        showFloatingToggle.checked = true
+    } else {
+        showFloatingToggle.checked = false
+    }
+}
+
+floatingPlayerState()
+
+const changeFloatingState = () => {
+    const state = JSON.parse(localStorage.getItem('hiddenFloating')) || false
+
+    localStorage.setItem('hiddenFloating', !state)
+    checkFloating()
+}
+
+const floatingPlayerPosition = () => {
+    const position = localStorage.getItem('floatingPosition') || 'br'
+
+    floatingPosition.value = position
+}
+
+floatingPlayerPosition()
+
+const changeFloatingPosition = () => {
+    const position = floatingPosition.value
+
+    localStorage.setItem('floatingPosition', position)
+    checkFloating()
+}
+
+const listThemes = (list) => {
+    const { light, dark } = list[0]
+
+    Object.values(light).forEach(({description, color}) => {
+        configThemes.querySelector('.subcontent.light').insertAdjacentHTML('beforeend',
+            `<div class="option">
+                <div class="description">
+                    ${description}
+                </div>
+                <div class="color">
+                    <input type="color" value="${color}">
+                </div>
+            </div>`
+        )
+    })
+
+    Object.values(dark).forEach(({description, color}) => {
+        configThemes.querySelector('.subcontent.dark').insertAdjacentHTML('beforeend',
+            `<div class="option">
+                <div class="description">
+                    ${description}
+                </div>
+                <div class="color">
+                    <input type="color" value="${color}">
+                </div>
+            </div>`
+        )
+    })
+}
+
+if (!themeList) {
+    fetch('../js/resources/defaultThemes.json').then(res => res.json())
+    .then(data => {
+        listThemes(data)
+        localStorage.setItem('themeList', JSON.stringify(data))
+    })
+} else {
+    listThemes(themeList)
 }
 
 const createFile = (e) => {
@@ -1109,6 +1245,22 @@ const newTabNote = () => {
         .addEventListener('click', () => closeInput('tab'))
 }
 
+const viewConfigOption = (id) => {
+    const view = configModal.querySelector(`.view.${id}`)
+    const currentView = configModal.querySelector('.view.active')
+
+    if (view == currentView) return
+
+    currentView.classList.remove('active')
+    view.classList.add('active')
+}
+
+configOptions.forEach((op => {
+    const id = op.id
+    
+    op.addEventListener('click', () => viewConfigOption(id))
+}))
+
 const removeWelcome = () => {
     localStorage.setItem('noWelcome', true)
     localStorage.removeItem('welcomeContent')
@@ -1146,6 +1298,7 @@ autoSave()
 
 document.addEventListener('keydown', saveDocument)
 toggleViewButton.addEventListener('click', toggleView)
+homeButton.addEventListener('click', () => location.href = '../')
 viewFiles.addEventListener('click', viewFolder)
 addNoteButton.addEventListener('click', newButtonNote)
 addNoteInput.addEventListener('click', (e) => e.stopPropagation())
@@ -1164,8 +1317,14 @@ prevButton.addEventListener('click', prevSong)
 prevButton2.addEventListener('click', prevSong)
 nextButton.addEventListener('click', nextSong)
 nextButton2.addEventListener('click', nextSong)
+closeFloating.addEventListener('click', hideFloating)
 uploadTrack.addEventListener('click', () => uploadTrackInput.click())
 uploadTrackInput.addEventListener('change', processTrack)
 document.querySelector('audio').addEventListener('ended', nextSong)
 disc.addEventListener('wheel', changeDiscVol)
 disc2.addEventListener('wheel', changeDiscVol)
+configButton.addEventListener('click', () => configContainer.classList.add('active'))
+configContainer.addEventListener('click', () => configContainer.classList.remove('active'))
+configModal.addEventListener('click', (e) => e.stopPropagation())
+showFloatingToggle.addEventListener('change', changeFloatingState)
+floatingPosition.addEventListener('change', changeFloatingPosition)

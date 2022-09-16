@@ -13,8 +13,15 @@
 <body>
     <div class="mainContainer">
         <div class="sidebar">
-            <div class="menu">
-                <i class="fas fa-bars"></i>
+            <div class="home">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 624.17578 713.37413">
+                    <path class="cls-1" d="M576.12053,371.8801a120.59675,120.59675,0,0,1-37.21122,
+                    166.43956l-.00487.00309L312.09218,682.25994,85.26665,538.32275l-.0001-.00006A120.59675,
+                    120.59675,0,0,1,48.0583,371.87827l1.00332-1.581A120.59677,120.59677,0,0,1,215.50094,
+                    333.0909l96.59124,61.29466,96.58661-61.29167a120.59675,120.59675,0,0,1,166.44232,37.2112Z"/>
+                    <path class="cls-1" d="M384.41524,174.5a72.32735,72.32735,0,0,1-144.6547,0c0-39.94529,
+                    72.32735-143.3858,72.32735-143.3858S384.41524,134.55469,384.41524,174.5Z"/>
+                </svg>
             </div>
             <div class="files" title="List Notes">
                 <i class="fas fa-folder"></i>
@@ -94,11 +101,14 @@
                 <div class="progress"></div>
             </div>
         </div>
-        <div class="floatingPlayer active">
+        <div class="floatingPlayer active hidden">
             <div class="cover">
                 <i class="fas fa-compact-disc"></i>
             </div>
             <div class="wrapper">
+                <div class="close">
+                    <i class="fas fa-times"></i>
+                </div>
                 <div class="themeName">
                     <i class="fas fa-music"></i>
                     <span></span>
@@ -114,6 +124,120 @@
                         <i class="fas fa-forward"></i>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="configContainer">
+            <div class="configModal">
+                <div class="options">
+                    <div class="title">
+                        <h2>Settings</h2>
+                    </div>
+                    <div class="op general" id="general">
+                        <i class="fas fa-gear"></i>
+                        <span>General</span>
+                    </div>
+                    <div class="op font" id="font">
+                        <i class="fas fa-font"></i>
+                        <span>Font</span>
+                    </div>
+                    <div class="op appearance" id="appearance">
+                        <i class="fas fa-swatchbook"></i>
+                        <span>Appearance</span>
+                    </div>
+                    <div class="op music" id="music">
+                        <i class="fas fa-music"></i>
+                        <span>Music</span>
+                    </div>
+                </div>
+                <div class="details">
+                    <div class="view general active">
+                        <div class="title">
+                            <h3>General</h3>
+                        </div>
+                    </div>
+                    <div class="view font">
+                        <div class="title">
+                            <h3>Font</h3>
+                        </div>
+                        <div class="content">
+                            <div class="option">
+                                <div class="description">
+                                    Font Face
+                                </div>
+                                <div class="select">
+                                    <select>
+                                        <option value="openSans">Open Sans</option>
+                                        <option value="firaCode">Fira Code</option>
+                                        <option value="robotoMono">Roboto Mono</option>
+                                        <option value="jetbrainsMono">JetBrains Mono</option>
+                                    </select>
+                                    <i class="fas fa-chevron-left"></i>
+                                </div>
+                            </div>
+                            <div class="option">
+                                <div class="description">
+                                    Font Size
+                                </div>
+                                <div class="number">
+                                    <input type="number" value="14" min="1" max="50">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="view appearance">
+                        <div class="title">
+                            <h3>Appearance</h3>
+                        </div>
+                        <div class="content">
+                            <div class="subtitle light">
+                                <h4>Light Theme</h4>
+                            </div>
+                            <div class="subcontent light"></div>
+                            <div class="subtitle dark">
+                                <h4>Dark Theme</h4>
+                            </div>
+                            <div class="subcontent dark"></div>
+                        </div>
+                    </div>
+                    <div class="view music">
+                        <div class="title">
+                            <h3>Music</h3>
+                        </div>
+                        <div class="content">
+                            <div class="option">
+                                <div class="description">
+                                    Show floating music player
+                                </div>
+                                <div class="toggleWrapper">
+                                    <input type="checkbox" id="showFloating">
+                                    <div class="toggle">
+                                        <label for="showFloating"></label>
+                                        <div class="circle">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="option">
+                                <div class="description">
+                                    Floating music player position
+                                </div>
+                                <div class="select">
+                                    <select id="floatingPosition">
+                                        <option value="tl">Top Left</option>
+                                        <option value="tm">Top Mid</option>
+                                        <option value="tr">Top Right</option>
+                                        <option value="rm">Right Mid</option>
+                                        <option value="br">Bottom Right</option>
+                                        <option value="bm">Bottom Mid</option>
+                                        <option value="bl">Bottom Left</option>
+                                        <option value="lm">Left Mid</option>
+                                    </select>
+                                    <i class="fas fa-chevron-left"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>           
             </div>
         </div>
         <div class="container1">

@@ -1,47 +1,5 @@
 @import 'header2';
 
-@keyframes modalContainer {
-    0% {
-        opacity: 0;
-        visibility: hidden;
-    }
-
-    100% {
-        opacity: 1;
-        visibility: visible;
-    }
-}
-
-@keyframes modal {
-    0% {
-        transform: scale(0);
-    }
-
-    100% {
-        transform: scale(1);
-    }
-}
-
-@keyframes disc {
-    from {
-        transform: rotate(0);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes spinnerRotate {
-    0% {
-        transform: rotate(0);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    } 
-}
-
 .mainContainer {
     width: 100%;
     height: 100vh;
@@ -107,6 +65,7 @@
                     border-radius: 50vh;
                     border: none;
                     outline: none;
+                    background-color: var(--button-bg);
                     color: var(--button-text);
                     font-family: 'Open Sans', sans-serif;
                     font-weight: 600;
@@ -156,6 +115,32 @@
             font-size: 1.5em;
             color: var(--accent-color);
             transition: 0.2s ease-out;
+        }
+
+        .home {
+            height: 3em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &:hover {
+                svg {
+                    path {
+                        stroke: var(--accent-color-hover);
+                        fill: var(--accent-color-hover);
+                    }
+                }
+            }
+
+            svg {
+                width: 1.8em;
+
+                path {
+                    stroke: var(--accent-color);
+                    fill: var(--accent-color);
+                    transition: 0.2s ease-out;
+                }
+            }
         }
 
         .add {
@@ -802,7 +787,9 @@
     .floatingPlayer {
         position: absolute;
         bottom: 5em;
-        right: 2em;
+        right: 3em;
+        top: initial;
+        left: initial;
         width: 22em;
         height: 10em;
         z-index: 20;
@@ -824,6 +811,11 @@
             visibility: visible;
         }
 
+        &.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
         .cover {
             width: 40%;
 
@@ -843,6 +835,25 @@
             align-items: center;
             justify-content: center;
             gap: 0.5em;
+            position: relative;
+
+            .close {
+                position: absolute;
+                top: 0.5em;
+                right: -0.5em;
+                width: 2em;
+                height: 2em;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 10px;
+                transition: 0.2s ease-out;
+
+                &:hover {
+                    cursor: pointer;
+                    background-color: var(--folders-bg-hover);
+                }
+            }
 
             .themeName {
                 width: 100%;
@@ -888,6 +899,268 @@
 
                 .play {
                     padding-inline: 0.8em;
+                }
+            }
+        }
+    }
+
+    .configContainer {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 30;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #0c0c0cbe;
+        visibility: hidden;
+        opacity: 0;
+        transition: 0.2s ease-out;
+
+        &.active {
+            visibility: visible;
+            opacity: 1;
+
+            .configModal {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .configModal {
+            width: 90%;
+            height: 80%;
+            background-color: var(--config-bg);
+            border-radius: 15px;
+            display: flex;
+            overflow: hidden;
+            transition: 0.3s ease-in-out;
+            opacity: 0;
+            transform: scale(0.5);
+
+            .options {
+                width: 20%;
+                height: 100%;
+                background-color: var(--config-side);
+                padding-top: 1em;
+
+                .title {
+                    font-size: 1.2em;
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-bottom: 1.5em;
+
+                    &::before {
+                        position: absolute;
+                        content: '';
+                        bottom: -0.5em;
+                        height: 2px;
+                        width: 30%;
+                        background-color: var(--accent-color);
+                    }
+                }
+
+                .op {
+                    width: 100%;
+                    height: 3em;
+                    padding-inline: 1.5em;
+                    display: flex;
+                    align-items: center;
+                    transition: 0.2s ease-out;
+                    gap: 0.5em;
+
+                    &:hover {
+                        background-color: var(--config-hover);
+                        cursor: pointer;
+                    }
+                }
+            }
+
+            .details {
+                width: 80%;
+                height: 100%;
+                
+                .view {
+                    padding: 1em;
+                    display: none;
+                    width: 100%;
+                    height: 100%;
+                    flex-direction: column;
+
+                    &.active {
+                        display: flex;
+                    }
+
+                    .title {
+                        width: 100%;
+                        height: 8%;
+                        font-size: 1.2em;
+                    }
+
+                    .content {
+                        width: 100%;
+                        height: 92%;
+                        display: block;
+                        overflow-y: auto;
+
+                        .subtitle {
+                            width: 100%;
+                            height: 2em;
+                            color: var(--config-subtitle);
+                            display: flex;
+                            align-items: center;
+                        }
+                        
+                        .option {
+                            width: 100%;
+                            height: 4em;
+                            padding-inline: 1em;
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            position: relative;
+
+                            &:last-child {
+                                &::before {
+                                    opacity: 0;
+                                    visibility: hidden;
+                                }
+                            }
+                            
+                            &::before {
+                                content: '';
+                                position: absolute;
+                                bottom: 0;
+                                left: 0;
+                                width: 100%;
+                                height: 2px;
+                                background-color: var(--accent-color);
+                            }
+
+                            .toggleWrapper {
+                                height: 50%;
+                                aspect-ratio: 2 / 1;
+                                border-radius: 50vh;
+                                overflow: hidden;
+
+                                input {
+                                    display: none;
+
+                                    &:checked ~ .toggle {
+                                        background-color: var(--checked-config);
+
+                                        .circle {
+                                            transform: translateX(calc(150% - 0.05em));
+                                        }
+                                    }
+                                }
+
+                                .toggle {
+                                    width: 100%;
+                                    height: 100%;
+                                    position: relative;
+                                    background-color: var(--config-toggle);
+                                    display: flex;
+                                    align-items: center;
+                                    padding-inline: 0.3em;
+                                    transition: 0.2s ease-out;
+
+                                    label {
+                                        position: absolute;
+                                        top: 0;
+                                        left: 0;
+                                        width: 100%;
+                                        height: 100%;
+                                        z-index: 10;
+
+                                        &:hover {
+                                            cursor: pointer;
+                                        }
+                                    }
+    
+                                    .circle {
+                                        height: 70%;
+                                        aspect-ratio: 1 / 1;
+                                        background-color: var(--text-color);
+                                        border-radius: 50%;
+                                        transition: 0.3s cubic-bezier(.47,1.64,.41,.8);
+                                        z-index: 5;
+                                    }
+                                }
+                            }
+
+                            .select {
+                                height: 50%;
+                                width: max-content;
+                                position: relative;
+                                display: flex;
+                                align-items: center;
+
+                                select {
+                                    appearance: none;
+                                    width: auto;
+                                    height: 100%;
+                                    padding-left: 0.8em;
+                                    padding-right: 2em;
+                                    border: none;
+                                    outline: none;
+                                    border-radius: 50vh;
+                                    background-color: var(--config-toggle);
+                                    color: var(--text-color);
+
+                                    &:hover {
+                                        cursor: pointer;
+                                    }
+
+                                    &:focus {
+                                        &+ i {
+                                            transform: rotate(-90deg);
+                                        }  
+                                    }
+                                }
+
+                                i {
+                                    position: absolute;
+                                    right: 1em;
+                                    font-size: 0.8em;
+                                    transition: 0.2s ease-in-out;
+                                    pointer-events: none;
+                                }
+                            }
+
+                            .color {
+                                input {
+                                    border: none;
+                                    outline: none;
+                                    appearance: none;
+                                    width: max-content;
+                                    cursor: pointer;
+                                    background-color: transparent;
+
+                                    &::-webkit-color-swatch {
+                                        border-radius: 50%;
+                                        border: none;
+                                        width: 2em;
+                                        height: 2em;
+                                    }
+                                }
+                            }
+
+                            .number {
+                                input {
+                                    border: none;
+                                    outline: none;
+                                    background-color: var(--config-toggle);
+                                    color: var(--text-color);
+                                    padding: 0.5em 1em;
+                                    border-radius: 50vh;
+                                    transition: 0.2s ease-out;
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
