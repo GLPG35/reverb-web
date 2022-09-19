@@ -1,4 +1,9 @@
+const toggleSwitch2 = document.querySelector('.inputToggle')
 const container1 = document.querySelector('.container1')
+const downloadButton = container1.querySelector('.download')
+const platformIcon = downloadButton.querySelector('i')
+const platformSpan = downloadButton.querySelector('span')
+const mainPreviewImg = container1.querySelector('.mainPreview img')
 
 const writeText = () => {
     const h1 = container1.querySelector('h1')
@@ -9,29 +14,74 @@ const writeText = () => {
     const h2Text = 'while enjoying your favorite music.'
     const delay = 60
 
-    for (let i = 0; i < h1Text.length; i++) {
+    Array.from(h1Text).forEach((char, i) => {
         setTimeout(() => {
-            h1Span.insertAdjacentText('beforebegin', h1Text.charAt(i))
+            h1Span.insertAdjacentText('beforebegin', char)
         }, i * delay)
-    }
+    })
 
     setTimeout(() => {
-        for (let i = 0; i < h1SpanText.length; i++) {
+        Array.from(h1SpanText).forEach((char, i) => {
             setTimeout(() => {
-                h1Span.insertAdjacentText('beforeend', h1SpanText.charAt(i))
+                h1Span.insertAdjacentText('beforeend', char)
             }, i * delay)
-        }
+        })
     }, h1Text.length * delay)
 
     setTimeout(() => {
         h1.style.border = 'none'
+        h2.classList.add('active')
 
-        for (let i = 0; i < h2Text.length; i++) {
+        Array.from(h2Text).forEach((char, i) => {
             setTimeout(() => {
-                h2.insertAdjacentText('beforeend', h2Text.charAt(i))
+                h2.insertAdjacentText('beforeend', char)
             }, i * delay)
-        }
+        })
     }, (h1Text.length * delay) + (h1SpanText.length * delay))
 }
 
 writeText()
+
+const checkTheme = () => {
+    const currentTheme = localStorage.getItem('theme') || 'light'
+
+    mainPreviewImg.src = `images/main_${currentTheme}.webp`
+}
+
+checkTheme()
+
+const checkPlatform = () => {
+    const platform = navigator.userAgentData.platform
+    const platformList = [
+        {
+            name: 'Windows',
+            icon: 'fab fa-windows'
+        },
+        {
+            name: 'Macintosh',
+            icon: 'fab fa-apple'
+        },
+        {
+            name: 'Linux',
+            icon: 'fab fa-linux'
+        }
+    ]
+
+    return platformList.find(x => x.name == platform) ?? 'Other'
+}
+
+
+if (checkPlatform() != 'Other') {
+    platformIcon.className = checkPlatform().icon
+    platformSpan.innerText = checkPlatform().name
+} else {
+    platformIcon.className = 'fas fa-circle-question'
+    platformSpan.innerText = 'Other OS'
+}
+
+const downloadReverb = () => {
+    const checkOS = checkPlatform()
+}
+
+toggleSwitch2.addEventListener('change', checkTheme)
+downloadButton.addEventListener('click', downloadReverb)

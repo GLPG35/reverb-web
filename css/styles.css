@@ -19,6 +19,15 @@
   box-sizing: border-box;
 }
 
+::-webkit-scrollbar {
+  width: 0.3em;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--accent-color);
+  border-radius: 50vh;
+  transition: 0.2s ease-out;
+}
+
 @keyframes writing {
   from, to {
     border-color: transparent;
@@ -151,11 +160,12 @@ header .themeSwitcher .toggle .moon {
 
 .container1 {
   width: 100%;
-  height: calc(100vh - 4em);
+  min-height: calc(100vh - 4em);
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 1em;
+  gap: 3em;
 }
 .container1 .title {
   display: flex;
@@ -182,8 +192,73 @@ header .themeSwitcher .toggle .moon {
 }
 .container1 .title h2 {
   font-weight: 300;
-  border-right: 3px solid var(--accent-color);
+  border-right: 3px solid transparent;
+}
+.container1 .title h2.active {
   animation: writing 1s linear infinite;
+}
+.container1 .links {
+  width: max-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5em;
+  font-weight: 600;
+}
+.container1 .links .write {
+  padding: 0.5em 1em;
+  background: linear-gradient(135deg, #3874b1, #80cedb);
+  border-radius: 50vh;
+  color: #2b2b2b;
+  text-decoration: none;
+}
+.container1 .links .write:hover {
+  cursor: pointer;
+}
+.container1 .links .download {
+  padding: 0.5em 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  position: relative;
+}
+.container1 .links .download::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 40%;
+  height: 2.5px;
+  background: linear-gradient(135deg, #3874b1, #80cedb);
+  border-radius: 50vh;
+  transition: 0.2s ease-out;
+}
+.container1 .links .download:hover {
+  cursor: pointer;
+}
+.container1 .links .download:hover::before {
+  width: 80%;
+}
+.container1 .links .download[disabled] {
+  opacity: 0.3;
+}
+.container1 .links .download[disabled]:hover {
+  cursor: initial;
+  user-select: none;
+}
+.container1 .links .download[disabled]:hover::before {
+  width: 40%;
+}
+.container1 .mainPreview {
+  width: 80%;
+  height: max-content;
+}
+.container1 .mainPreview img {
+  object-fit: cover;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 0 20px 0 rgba(56, 116, 177, 0.5019607843);
 }
 
 /*# sourceMappingURL=styles.css.map */

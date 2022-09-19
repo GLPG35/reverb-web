@@ -20,6 +20,16 @@
     box-sizing: border-box;
 }
 
+::-webkit-scrollbar {
+    width: 0.3em;
+
+    &-thumb {
+        background-color: var(--accent-color);
+        border-radius: 50vh;
+        transition: 0.2s ease-out;
+    }
+}
+
 @keyframes writing {
     from, to {
         border-color: transparent;
