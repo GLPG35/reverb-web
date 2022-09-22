@@ -80,6 +80,7 @@ if (checkPlatform() != 'Other') {
 }
 
 const downloadReverb = () => {
+    // Function will be available if the desktop version is ready.
     const checkOS = checkPlatform()
 }
 

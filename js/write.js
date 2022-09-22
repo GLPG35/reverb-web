@@ -1029,11 +1029,7 @@ if (!noWelcome && !welcomeContent) {
 const floatingPlayerState = () => {
     const state = JSON.parse(localStorage.getItem('hiddenFloating')) || false
 
-    if (!state) {
-        showFloatingToggle.checked = true
-    } else {
-        showFloatingToggle.checked = false
-    }
+    showFloatingToggle.checked = !state
 }
 
 floatingPlayerState()
