@@ -1,5 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Merienda:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap");
 :root {
+  --font: "Open Sans";
   --bg-color: #e2f5f7;
   --guide-color: #97cdd3;
   --text-color: #2b2b2b;
@@ -111,7 +123,7 @@
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
-  font-family: "Open Sans", sans-serif;
+  font-family: var(--font), sans-serif;
 }
 
 .mainContainer {
@@ -178,7 +190,7 @@ body {
   outline: none;
   background-color: var(--button-bg);
   color: var(--button-text);
-  font-family: "Open Sans", sans-serif;
+  font-family: var(--font), sans-serif;
   font-weight: 600;
   transition: 0.2s ease-out;
 }
@@ -297,7 +309,7 @@ body {
   border-radius: 50vh;
   padding-left: 0.8em;
   padding-right: 2.5em;
-  font-family: "Open Sans", sans-serif;
+  font-family: var(--font), sans-serif;
   font-weight: 400;
   font-size: 0.8em;
   background-color: var(--button-input-bg);
@@ -469,7 +481,7 @@ body {
   border-radius: 50vh;
   padding-left: 0.8em;
   padding-right: 2.5em;
-  font-family: "Open Sans", sans-serif;
+  font-family: var(--font), sans-serif;
   font-weight: 400;
   font-size: 0.8em;
   background-color: var(--folders-input-bg);
@@ -1195,7 +1207,7 @@ body {
   border-radius: 50vh;
   padding-left: 0.8em;
   padding-right: 2.5em;
-  font-family: "Open Sans", sans-serif;
+  font-family: var(--font), sans-serif;
   font-weight: 400;
   font-size: 0.8em;
   background-color: var(--folders-input-bg);
@@ -1376,7 +1388,7 @@ body {
   color: var(--text-color);
   font-size: 1.1em;
   resize: none;
-  font-family: "Open Sans", sans-serif;
+  font-family: var(--font), sans-serif;
   font-weight: 400;
   overflow-y: auto;
 }

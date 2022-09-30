@@ -67,7 +67,7 @@
                     outline: none;
                     background-color: var(--button-bg);
                     color: var(--button-text);
-                    font-family: 'Open Sans', sans-serif;
+                    font-family: var(--font), sans-serif;
                     font-weight: 600;
                     transition: 0.2s ease-out;
 
@@ -210,7 +210,7 @@
                         border-radius: 50vh;
                         padding-left: 0.8em;
                         padding-right: 2.5em;
-                        font-family: 'Open Sans', sans-serif;
+                        font-family: var(--font), sans-serif;
                         font-weight: 400;
                         font-size: 0.8em;
                         background-color: var(--button-input-bg);
@@ -412,7 +412,7 @@
                     border-radius: 50vh;
                     padding-left: 0.8em;
                     padding-right: 2.5em;
-                    font-family: 'Open Sans', sans-serif;
+                    font-family: var(--font), sans-serif;
                     font-weight: 400;
                     font-size: 0.8em;
                     background-color: var(--folders-input-bg);
@@ -1257,7 +1257,7 @@
                                 border-radius: 50vh;
                                 padding-left: 0.8em;
                                 padding-right: 2.5em;
-                                font-family: 'Open Sans', sans-serif;
+                                font-family: var(--font), sans-serif;
                                 font-weight: 400;
                                 font-size: 0.8em;
                                 background-color: var(--folders-input-bg);
@@ -1472,7 +1472,7 @@
                     color: var(--text-color);
                     font-size: 1.1em;
                     resize: none;
-                    font-family: 'Open Sans', sans-serif;
+                    font-family: var(--font), sans-serif;
                     font-weight: 400;
                     overflow-y: auto;
                 }

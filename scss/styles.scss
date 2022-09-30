@@ -17,11 +17,11 @@
 
         h1 {
             font-weight: 900;
-            border-right: 3px solid var(--accent-color);
-            animation: writing 1s linear infinite;
+            text-align: center;
 
-            span {
+            span.gradient {
                 position: relative;
+                display: inline-block;
 
                 &::before {
                     content: '';
@@ -37,11 +37,21 @@
 
         h2 {
             font-weight: 300;
-            border-right: 3px solid transparent;
+            text-align: center;
 
-            &.active {
-                animation: writing 1s linear infinite;
+            .cursor {
+                display: none;
+
+                &.active {
+                    display: initial;
+                }
             }
+        }
+
+        .cursor {
+            padding: 2px 1.3px;
+            animation: writing 1s linear infinite;
+            background-color: var(--accent-color);
         }
     }
 
@@ -118,5 +128,11 @@
             border-radius: 10px;
             box-shadow: 0 0 20px 0 #3874b180;
         }
+    }
+}
+
+@media (max-width: 700px) {
+    .container1 {
+        
     }
 }

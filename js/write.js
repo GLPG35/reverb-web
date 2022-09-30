@@ -75,7 +75,9 @@ const configButton = document.querySelector('.config')
 const configContainer = document.querySelector('.configContainer')
 const configModal = configContainer.querySelector('.configModal')
 const configOptions = configModal.querySelectorAll('.op')
-const configThemes = configModal.querySelector('.appearance .content')
+const previewFirst = configModal.querySelector('.general #previewFirst')
+const fontSelect = configModal.querySelector('.font .option select')
+const fontOptions = fontSelect.querySelectorAll('option')
 const showFloatingToggle = configModal.querySelector('.music #showFloating')
 const floatingPosition = configModal.querySelector('.music #floatingPosition')
 let volTimer
@@ -1026,6 +1028,28 @@ if (!noWelcome && !welcomeContent) {
     }
 }
 
+const checkPreview = (state) => {
+    if (state == !rDocument.classList.contains('active')) {
+        toggleView()
+    }
+}
+
+const checkPreviewFirst = () => {
+    const state = JSON.parse(localStorage.getItem('previewFirst')) || false
+
+    previewFirst.checked = !state
+    checkPreview(state)
+}
+
+checkPreviewFirst()
+
+const changePreviewFirst = () => {
+    const state = JSON.parse(localStorage.getItem('previewFirst')) || false
+
+    localStorage.setItem('previewFirst', !state)
+    checkPreviewFirst()
+}
+
 const floatingPlayerState = () => {
     const state = JSON.parse(localStorage.getItem('hiddenFloating')) || false
 
@@ -1056,7 +1080,31 @@ const changeFloatingPosition = () => {
     checkFloating()
 }
 
-const listThemes = (list) => {
+const checkFont = () => {
+    const currentFont = localStorage.getItem('font') ||
+        (localStorage.setItem('font', 'Open Sans'), 'Open Sans')
+
+    fontOptions.forEach(element => {
+        if (element.textContent == currentFont) {
+            element.setAttribute('selected', '')
+        }
+    })
+
+    document.body.style.setProperty('--font', currentFont)
+}
+
+checkFont()
+
+const changeFont = () => {
+    const selectedFont = fontSelect.options[fontSelect.selectedIndex].text
+
+    localStorage.setItem('font', selectedFont)
+    checkFont()
+}
+
+//* Color themes section (Not available yet)
+
+/* const listThemes = (list) => {
     const { light, dark } = list[0]
 
     Object.values(light).forEach(({description, color}) => {
@@ -1094,7 +1142,7 @@ if (!themeList) {
     })
 } else {
     listThemes(themeList)
-}
+} */
 
 const createFile = (e) => {
     const inputClass = e.target.classList.value
@@ -1322,5 +1370,7 @@ disc2.addEventListener('wheel', changeDiscVol)
 configButton.addEventListener('click', () => configContainer.classList.add('active'))
 configContainer.addEventListener('click', () => configContainer.classList.remove('active'))
 configModal.addEventListener('click', (e) => e.stopPropagation())
+previewFirst.addEventListener('change', changePreviewFirst)
 showFloatingToggle.addEventListener('change', changeFloatingState)
 floatingPosition.addEventListener('change', changeFloatingPosition)
+fontSelect.addEventListener('change', changeFont)

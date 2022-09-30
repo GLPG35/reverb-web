@@ -3,12 +3,14 @@
   --bg-color: #e2f5f7;
   --text-color: #2b2b2b;
   --accent-color: #3874b1;
+  --menu-color: #c5e1e3;
 }
 
 [data-theme=dark] {
   --bg-color: #282838;
   --text-color: #e2f5f7;
   --accent-color: #80cedb;
+  --menu-color: #2f2f43;
 }
 
 *,
@@ -30,10 +32,10 @@
 
 @keyframes writing {
   from, to {
-    border-color: transparent;
+    background-color: transparent;
   }
   50% {
-    border-color: var(--accent-color);
+    background-color: var(--accent-color);
   }
 }
 body {
@@ -158,6 +160,34 @@ header .themeSwitcher .toggle .moon {
   margin-right: 0.1em;
 }
 
+@media (max-width: 700px) {
+  header .menu {
+    display: initial;
+  }
+  header ul {
+    position: absolute;
+    width: 5em;
+    height: max-content;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-block: 2em;
+    padding-right: 0;
+    gap: 1.5em;
+    top: 0;
+    left: 0;
+    z-index: 20;
+    background-color: var(--menu-color);
+    border-radius: 0 20px 20px 0;
+    transform: translateX(-100%);
+    transition: 0.3s ease-in-out;
+  }
+  header ul.active {
+    transform: translateX(0);
+  }
+  header ul :not(:first-child) a {
+    padding: 0.5em 1em;
+  }
+}
 .container1 {
   width: 100%;
   min-height: calc(100vh - 4em);
@@ -175,13 +205,13 @@ header .themeSwitcher .toggle .moon {
 }
 .container1 .title h1 {
   font-weight: 900;
-  border-right: 3px solid var(--accent-color);
-  animation: writing 1s linear infinite;
+  text-align: center;
 }
-.container1 .title h1 span {
+.container1 .title h1 span.gradient {
   position: relative;
+  display: inline-block;
 }
-.container1 .title h1 span::before {
+.container1 .title h1 span.gradient::before {
   content: "";
   position: absolute;
   bottom: 0;
@@ -192,10 +222,18 @@ header .themeSwitcher .toggle .moon {
 }
 .container1 .title h2 {
   font-weight: 300;
-  border-right: 3px solid transparent;
+  text-align: center;
 }
-.container1 .title h2.active {
+.container1 .title h2 .cursor {
+  display: none;
+}
+.container1 .title h2 .cursor.active {
+  display: initial;
+}
+.container1 .title .cursor {
+  padding: 2px 1.3px;
   animation: writing 1s linear infinite;
+  background-color: var(--accent-color);
 }
 .container1 .links {
   width: max-content;
