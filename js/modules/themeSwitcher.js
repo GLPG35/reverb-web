@@ -22,6 +22,7 @@ if (currentTheme) {
     if (colorScheme.matches) {
         document.documentElement.setAttribute('data-theme', 'dark')
         toggleSwitch.checked = true
+        localStorage.setItem('theme', 'dark')
     }
 }
 

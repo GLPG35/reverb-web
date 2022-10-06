@@ -46,8 +46,9 @@ writeText()
 
 const checkTheme = () => {
     const currentTheme = localStorage.getItem('theme') || 'light'
+    const device = window.innerWidth <= 700 ? 'mobile' : 'desktop'
 
-    mainPreviewImg.src = `images/main_${currentTheme}.webp`
+    mainPreviewImg.src = `images/main_${device}_${currentTheme}.webp`
 }
 
 checkTheme()
@@ -87,4 +88,5 @@ const downloadReverb = () => {
 }
 
 toggleSwitch2.addEventListener('change', checkTheme)
+window.addEventListener('resize', checkTheme)
 downloadButton.addEventListener('click', downloadReverb)
