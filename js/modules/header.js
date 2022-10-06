@@ -32,7 +32,7 @@ const responsive = () => {
     } else {
         if (menuList.querySelector('li a.home i')) {
             menuList.querySelectorAll('li a').forEach(element => {
-                const classN = element.classList.value
+                const classN = element.classList.value.replace('active', '')
 
                 if (classN == 'write') {
                     menuList.querySelector('li a.write')
