@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap");
 :root {
   --bg-color: #e2f5f7;
@@ -211,111 +212,165 @@ footer {
   width: 100%;
   min-height: calc(100vh - 4em);
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 1em;
-  gap: 3em;
 }
-.container1 .title {
+.container1 .sidebar {
+  min-height: calc(100vh - 4em);
+  width: 18em;
+  background-color: var(--menu-color);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin-top: 4em;
+  padding-top: 1.5em;
+  border-radius: 0 20px 20px 0;
+  gap: 1em;
 }
-.container1 .title h1 {
-  font-weight: 900;
-  text-align: center;
+.container1 .sidebar .title {
+  padding-left: 1.5em;
 }
-.container1 .title h1 span.gradient {
-  position: relative;
-  display: inline-block;
+.container1 .sidebar .title h2 {
+  font-weight: 800;
 }
-.container1 .title h1 span.gradient::before {
-  content: "";
-  position: absolute;
-  bottom: 0;
+.container1 .sidebar .sections {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  height: 4px;
-  border-radius: 50vh;
-  background: linear-gradient(135deg, #3874b1, #80cedb);
-}
-.container1 .title h2 {
-  font-weight: 300;
-  text-align: center;
-}
-.container1 .title h2 .cursor {
-  display: none;
-}
-.container1 .title h2 .cursor.active {
-  display: initial;
-}
-.container1 .title .cursor {
-  padding: 2px 1.3px;
-  animation: writing 1s linear infinite;
-  background-color: var(--accent-color);
-}
-.container1 .links {
-  width: max-content;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.5em;
-  font-weight: 600;
-}
-.container1 .links .write {
-  padding: 0.5em 1em;
-  background: linear-gradient(135deg, #3874b1, #80cedb);
-  border-radius: 50vh;
-  color: #2b2b2b;
-  text-decoration: none;
-}
-.container1 .links .write:hover {
-  cursor: pointer;
-}
-.container1 .links .download {
-  padding: 0.5em 1em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5em;
-  position: relative;
-}
-.container1 .links .download::before {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  width: 40%;
-  height: 2.5px;
-  background: linear-gradient(135deg, #3874b1, #80cedb);
-  border-radius: 50vh;
-  transition: 0.2s ease-out;
-}
-.container1 .links .download:hover {
-  cursor: pointer;
-}
-.container1 .links .download:hover::before {
-  width: 80%;
-}
-.container1 .links .download[disabled] {
-  opacity: 0.3;
-}
-.container1 .links .download[disabled]:hover {
-  cursor: initial;
-  user-select: none;
-}
-.container1 .links .download[disabled]:hover::before {
-  width: 40%;
-}
-.container1 .mainPreview {
-  width: 80%;
   height: max-content;
 }
-.container1 .mainPreview img {
+.container1 .sidebar .sections .section {
+  width: 100%;
+  height: 3em;
+  transition: 0.2s ease-out;
+  display: flex;
+  align-items: center;
+  padding-left: 1.5em;
+  user-select: none;
+}
+.container1 .sidebar .sections .section:hover {
+  background-color: var(--menu-hover);
+  cursor: pointer;
+}
+.container1 .contents {
+  width: calc(100% - 18em);
+  height: 100%;
+  overflow-y: auto;
+}
+.container1 .contents .view {
+  display: none;
+  flex-direction: column;
+  gap: 2em;
+  padding: 1.5em;
+}
+.container1 .contents .view.active {
+  display: flex;
+}
+.container1 .contents .view .title {
+  font-size: 2em;
+}
+.container1 .contents .view .title h3 {
+  font-weight: 800;
+}
+.container1 .contents .view .content {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+.container1 .contents .view .content .text p {
+  font-size: 1.1em;
+}
+.container1 .contents .view .content .text p a {
+  text-decoration: none;
+  color: var(--accent-color);
+  transition: 0.2s ease-out;
+}
+.container1 .contents .view .content .text p a:hover {
+  color: var(--accent-color-hover);
+}
+.container1 .contents .view .content .text .reverbLogo {
+  margin-top: 1.5em;
+  width: 10em;
+  height: auto;
+}
+.container1 .contents .view .content .text .reverbLogo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.container1 .contents .view .content .text ul {
+  padding: 1em 2em;
+}
+.container1 .contents .view .content .profile {
+  display: flex;
+  gap: 1em;
+}
+.container1 .contents .view .content .profile .pic {
+  min-width: 10em;
+  aspect-ratio: 1/1;
+  position: relative;
+}
+.container1 .contents .view .content .profile .pic::before {
+  content: "Me & My GF!";
+  padding: 0.3em 0.7em;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateX(-20%) rotate(-30deg);
+  background-color: var(--accent-color);
+  color: var(--bg-color);
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.9em;
+}
+.container1 .contents .view .content .profile .pic img {
   object-fit: cover;
   width: 100%;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 0 0 20px 0 rgba(56, 116, 177, 0.5019607843);
+  height: 100%;
+  border-radius: 50%;
+}
+.container1 .contents .view .content .profile .info {
+  font-size: 1.1em;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.5em;
+  max-width: 30em;
+}
+.container1 .contents .view .content .profile .info .socials {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 1.8em;
+}
+.container1 .contents .view .content .profile .info .socials a {
+  text-decoration: none;
+  color: var(--accent-color);
+  transition: 0.2s ease-out;
+}
+.container1 .contents .view .content .profile .info .socials a:hover {
+  color: var(--accent-color-hover);
+}
+.container1 .contents .view .content hr {
+  border: none;
+  outline: none;
+  background-color: var(--accent-color);
+  height: 2px;
+}
+.container1 .contents .view .content .contact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+.container1 .contents .view .content .contact .subtitle {
+  font-size: 1.5em;
+}
+.container1 .contents .view .content .contact .subtitle h4 {
+  font-weight: 700;
+}
+.container1 .contents .view .content .contact .content a {
+  text-decoration: none;
+  color: var(--accent-color);
+  transition: 0.2s ease-out;
+}
+.container1 .contents .view .content .contact .content a:hover {
+  color: var(--accent-color-hover);
 }
 
-/*# sourceMappingURL=styles.css.map */
+/*# sourceMappingURL=about.css.map */

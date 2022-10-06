@@ -12,7 +12,7 @@
         left: 0;
         top: 0;
         background-color: #0c0c0cbd;
-        z-index: 15;
+        z-index: 30;
         width: 100%;
         height: 100%;
         display: flex;
@@ -98,6 +98,7 @@
         gap: 0.5em;
         padding-block: 1em;
         z-index: 11;
+        transition: 0.2s ease-out;
 
         div {
             padding: 0.5em;
@@ -470,7 +471,7 @@
         left: 4em;
         border-radius: 0 15px 15px 0;
         transform: translateX(-100%);
-        transition: transform 0.3s ease-in-out;
+        transition: 0.3s ease-in-out;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -593,6 +594,10 @@
                 padding-block: 0.5em;
                 overflow-y: auto;
                 position: relative;
+                
+                &.empty {
+                    margin-block: auto;
+                }
 
                 .spinnerContainer {
                     position: absolute;
@@ -635,7 +640,7 @@
                 
                 .noTracks {
                     width: 100%;
-                    height: 16em;
+                    height: max-content;
                     display: flex;
                     align-items: center;
                     justify-content: center;
@@ -715,6 +720,10 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
+
+                &.empty {
+                    margin-top: 0;
+                }
             }
 
             .uploadTrack {
@@ -1485,7 +1494,7 @@
                 overflow-y: auto;
 
                 > * {
-                    word-break: break-all;
+                    word-break: normal;
                 }
 
                 br {
@@ -1569,6 +1578,182 @@
                             cursor: pointer;
                         }
                     }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 700px) {
+    .mainContainer {
+        overflow: hidden;
+
+        .sidebar {
+            .music {
+                display: none;
+            }
+        }
+
+        .folder {
+            .list {
+                .item {
+                    .delete {
+                        opacity: 1;
+                        visibility: visible;
+                    }
+                }
+            }
+        }
+
+        .musicPlayer {
+            right: 0;
+            left: initial;
+            transform: initial;
+            border-radius: 0;
+
+            &.activeLeft {
+                transform: translateX(100%);
+            }
+
+            .musicList {
+                .list {
+                    .item {
+                        .delete {
+                            opacity: 1;
+                            visibility: visible;
+                        }
+                    }
+                }
+            }
+        }
+
+        .floatingPlayer {
+            display: none !important;
+        }
+
+        .volumeIndicator {
+            z-index: 30;
+            left: initial;
+            right: 1em;
+            width: 3em;
+            height: 10em;
+            flex-direction: column-reverse;
+            align-items: center;
+            padding-inline: 0;
+            padding-block: 1em;
+
+            &.activeRight {
+                right: 16em;
+            }
+
+            .indicator {
+                width: 0.5em;
+                height: 0;
+                position: relative;
+
+                .progress {
+                    height: 10%;
+                    width: 100%;
+                    position: absolute;
+                    left: 0;
+                    bottom: 0;
+                }
+            }
+        }
+
+        .configContainer {
+            .configModal {
+                flex-direction: column;
+
+                .options {
+                    width: 100%;
+                    height: max-content;
+                    display: flex;
+                    flex-direction: column;
+
+                    .wrapper {
+                        display: flex;
+                        justify-content: space-around;
+
+                        .op {
+                            justify-content: center;
+
+                            span {
+                                display: none;
+                            }
+                        }
+                    }
+                }
+
+                .details {
+                    width: 100%;
+
+                    .view {
+                        .content {
+                            .option {
+                                .description {
+                                    height: max-content;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        .container1 {
+            position: absolute;
+            width: 100%;
+            z-index: 25;
+            top: 0;
+            left: 0;
+            background-color: var(--bg-color);
+            transition: 0.3s ease-in-out;
+
+            &.activeLeft {
+                transform: translateX(4em);
+
+                &.menuOpen {
+                    transform: translate(calc(4em + 15em));
+                }
+            }
+
+            &.activeRight {
+                transform: translateX(-15em);
+            }
+
+            header {
+                .tabsWrapper {
+                    .tabs {
+                        .tab {
+                            .close {
+                                opacity: 1;
+                                visibility: visible;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .document {
+                &::before {
+                    display: none;
+                }
+
+                &.active {
+                    .edit {
+                        max-width: initial;
+                        min-width: initial;
+                        width: 100%;
+                    }
+
+                    .preview {
+                        display: none;
+                    }
+                }
+
+                .guide {
+                    width: 80%;
                 }
             }
         }

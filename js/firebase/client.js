@@ -16,14 +16,6 @@ const app = initializeApp(firebaseConfig)
 const db = getFirestore(app)
 const storage = getStorage()
 
-export const addNote = ({uid, title, content}) => {
-    return addDoc(collection(db, 'notes'), {
-        uid,
-        title,
-        content
-    })
-}
-
 export const addMusic = (audio, extension) => {
     const name = new Date().getTime().toString() + (Math.random() + 1).toString(36).substring(10)
     const refAudio = ref(storage, `music/${name}.${extension}`)

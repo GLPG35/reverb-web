@@ -1,4 +1,4 @@
-import { addMusic, addNote, getMusic, newMusic, deleteMusic } from './firebase/client.js'
+import { addMusic, getMusic, newMusic, deleteMusic } from './firebase/client.js'
 import { getDownloadURL } from "https://www.gstatic.com/firebasejs/9.9.3/firebase-storage.js"
 
 const toggleViewButton = document.querySelector('.toggleView')
@@ -615,6 +615,7 @@ const viewMusic = () => {
         volumeIndicator.classList.remove('menuOpen')
     } else {
         volumeIndicator.classList.add('menuOpen')
+        document.querySelector('.container1').classList.add('menuOpen')
     }
 
     toggleFloating()
@@ -737,7 +738,16 @@ const showVolume = () => {
     const currentVolume = document.querySelector('audio').volume
     const volumeIcon = volumeIndicator.querySelector('i')
     !volumeIndicator.classList.contains('active') && volumeIndicator.classList.add('active')
-    volumeIndicator.querySelector('.progress').style.width = `${currentVolume * 100}%`
+    
+    if (window.innerWidth <= 700) {
+        volumeIndicator.querySelector('.progress').style.width &&
+            volumeIndicator.querySelector('.progress').removeAttribute('style')
+        volumeIndicator.querySelector('.progress').style.height = `${currentVolume * 100}%`
+    } else {
+        volumeIndicator.querySelector('.progress').style.height &&
+            volumeIndicator.querySelector('.progress').removeAttribute('style')
+        volumeIndicator.querySelector('.progress').style.width = `${currentVolume * 100}%`
+    }
 
     if ((currentVolume * 100) == 0) {
         volumeIcon.removeAttribute('class')
@@ -762,6 +772,8 @@ const listMusic = () => {
     const currentAudio = document.querySelector('audio')
 
     musicList.innerHTML = ''
+    musicList.classList.remove('empty')
+    musicQuantity.classList.remove('empty')
     musicList.insertAdjacentHTML('afterbegin',
         `<div class="spinnerContainer">
             <div class="spinnerWrapper">
@@ -780,9 +792,12 @@ const listMusic = () => {
             </div>`
         )
 
+        musicList.classList.add('empty')
+        musicQuantity.classList.add('empty')
+
         currentAudio.removeAttribute('src')
-        themeName.innerHTML = ''
-        themeName2.innerHTML = ''
+        themeName.innerHTML = 'No tracks to play'
+        themeName2.innerHTML = 'No tracks to play'
         !floatingPlayer.classList.contains('hidden') &&
             floatingPlayer.classList.add('hidden')
 
@@ -990,6 +1005,7 @@ const viewFolder = () => {
     }
 
     folder.classList.toggle('active')
+    document.querySelector('.container1').classList.add('menuOpen')
 }
 
 const closeMenu = () => {
@@ -1002,6 +1018,9 @@ const closeMenu = () => {
         musicPlayer.classList.toggle('active')
         volumeIndicator.classList.remove('menuOpen')
         toggleFloating()
+    }
+    if (document.querySelector('.container1').classList.contains('menuOpen')) {
+        document.querySelector('.container1').classList.remove('menuOpen')
     }
 }
 
@@ -1227,8 +1246,7 @@ const newFolderNote = () => {
 }
 
 const newButtonNote = () => {
-    if (folder.classList.contains('active')) viewFolder()
-    if (musicPlayer.classList.contains('active')) viewMusic()
+    closeMenu()
     if (document.querySelector('.tab.creating')) return
 
     addNoteButton.classList.toggle('active')
@@ -1340,6 +1358,61 @@ const autoSave = () => {
 
 autoSave()
 
+const handleRightSwipe = () => {
+    if (document.querySelector('.container1').classList.contains('activeRight')) {
+        document.querySelector('.sidebar').removeAttribute('style')
+        document.querySelector('.container1').classList.remove('activeRight')
+        volumeIndicator.classList.remove('activeRight')
+    } else {
+        document.querySelector('.container1').classList.add('activeLeft')
+        musicPlayer.classList.add('activeLeft')
+
+        setTimeout(() => {
+            document.querySelector('.sidebar').style.zIndex = 26
+        }, 200)
+    }
+}
+
+const handleLeftSwipe = () => {
+    if (document.querySelector('.container1').classList.contains('activeLeft')) {
+        document.querySelector('.sidebar').removeAttribute('style')
+        document.querySelector('.container1').classList.remove('activeLeft')
+        musicPlayer.classList.remove('activeLeft')
+    } else {
+        document.querySelector('.container1').classList.add('activeRight')
+        volumeIndicator.classList.add('activeRight')
+    }
+}
+
+let touchStartX = 0
+let touchEndX = 0
+let touchStartY = 0
+let touchEndY = 0
+
+const touchGestures = () => {
+    const diffX = touchStartX - touchEndX
+    const diffY = touchStartY - touchEndY
+
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+        if (touchEndX < touchStartX) {
+            handleLeftSwipe()
+        } else {
+            handleRightSwipe()
+        }
+    }
+}
+
+const setMobileHeight = () => {
+    document.querySelector('.mainContainer').style.height = `${window.innerHeight}px`
+}
+
+const deviceWidth = window.matchMedia('(max-width: 700px)')
+
+if (deviceWidth.matches) {
+    window.addEventListener('resize', setMobileHeight)
+    setMobileHeight()
+}
+
 document.addEventListener('keydown', saveDocument)
 toggleViewButton.addEventListener('click', toggleView)
 homeButton.addEventListener('click', () => location.href = '../')
@@ -1374,3 +1447,12 @@ previewFirst.addEventListener('change', changePreviewFirst)
 showFloatingToggle.addEventListener('change', changeFloatingState)
 floatingPosition.addEventListener('change', changeFloatingPosition)
 fontSelect.addEventListener('change', changeFont)
+rDocument.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX
+    touchStartY = e.changedTouches[0].screenY
+})
+rDocument.addEventListener('touchend', e => {
+    touchEndX = e.changedTouches[0].screenX
+    touchEndY = e.changedTouches[0].screenY
+    touchGestures()
+})

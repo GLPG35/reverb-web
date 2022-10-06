@@ -124,6 +124,7 @@ body {
   background-color: var(--bg-color);
   color: var(--text-color);
   font-family: var(--font), sans-serif;
+  transition: 0.2s ease-out;
 }
 
 .mainContainer {
@@ -138,7 +139,7 @@ body {
   left: 0;
   top: 0;
   background-color: rgba(12, 12, 12, 0.7411764706);
-  z-index: 15;
+  z-index: 30;
   width: 100%;
   height: 100%;
   display: flex;
@@ -214,6 +215,7 @@ body {
   gap: 0.5em;
   padding-block: 1em;
   z-index: 11;
+  transition: 0.2s ease-out;
 }
 .mainContainer .sidebar div {
   padding: 0.5em;
@@ -530,7 +532,7 @@ body {
   left: 4em;
   border-radius: 0 15px 15px 0;
   transform: translateX(-100%);
-  transition: transform 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -640,6 +642,9 @@ body {
   overflow-y: auto;
   position: relative;
 }
+.mainContainer .musicPlayer .musicList .list.empty {
+  margin-block: auto;
+}
 .mainContainer .musicPlayer .musicList .list .spinnerContainer {
   position: absolute;
   top: 0;
@@ -677,7 +682,7 @@ body {
 }
 .mainContainer .musicPlayer .musicList .list .noTracks {
   width: 100%;
-  height: 16em;
+  height: max-content;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -743,6 +748,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.mainContainer .musicPlayer .musicList .quantity.empty {
+  margin-top: 0;
 }
 .mainContainer .musicPlayer .musicList .uploadTrack {
   display: flex;
@@ -1399,7 +1407,7 @@ body {
   overflow-y: auto;
 }
 .mainContainer .container1 .document .preview > * {
-  word-break: break-all;
+  word-break: normal;
 }
 .mainContainer .container1 .document .preview br {
   height: 0;
@@ -1468,6 +1476,122 @@ body {
 }
 .mainContainer .container1 .document .guide .info .addNote:hover {
   cursor: pointer;
+}
+
+@media (max-width: 700px) {
+  .mainContainer {
+    overflow: hidden;
+  }
+  .mainContainer .sidebar .music {
+    display: none;
+  }
+  .mainContainer .folder .list .item .delete {
+    opacity: 1;
+    visibility: visible;
+  }
+  .mainContainer .musicPlayer {
+    right: 0;
+    left: initial;
+    transform: initial;
+    border-radius: 0;
+  }
+  .mainContainer .musicPlayer.activeLeft {
+    transform: translateX(100%);
+  }
+  .mainContainer .musicPlayer .musicList .list .item .delete {
+    opacity: 1;
+    visibility: visible;
+  }
+  .mainContainer .floatingPlayer {
+    display: none !important;
+  }
+  .mainContainer .volumeIndicator {
+    z-index: 30;
+    left: initial;
+    right: 1em;
+    width: 3em;
+    height: 10em;
+    flex-direction: column-reverse;
+    align-items: center;
+    padding-inline: 0;
+    padding-block: 1em;
+  }
+  .mainContainer .volumeIndicator.activeRight {
+    right: 16em;
+  }
+  .mainContainer .volumeIndicator .indicator {
+    width: 0.5em;
+    height: 0;
+    position: relative;
+  }
+  .mainContainer .volumeIndicator .indicator .progress {
+    height: 10%;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+  }
+  .mainContainer .configContainer .configModal {
+    flex-direction: column;
+  }
+  .mainContainer .configContainer .configModal .options {
+    width: 100%;
+    height: max-content;
+    display: flex;
+    flex-direction: column;
+  }
+  .mainContainer .configContainer .configModal .options .wrapper {
+    display: flex;
+    justify-content: space-around;
+  }
+  .mainContainer .configContainer .configModal .options .wrapper .op {
+    justify-content: center;
+  }
+  .mainContainer .configContainer .configModal .options .wrapper .op span {
+    display: none;
+  }
+  .mainContainer .configContainer .configModal .details {
+    width: 100%;
+  }
+  .mainContainer .configContainer .configModal .details .view .content .option .description {
+    height: max-content;
+  }
+  .mainContainer .container1 {
+    position: absolute;
+    width: 100%;
+    z-index: 25;
+    top: 0;
+    left: 0;
+    background-color: var(--bg-color);
+    transition: 0.3s ease-in-out;
+  }
+  .mainContainer .container1.activeLeft {
+    transform: translateX(4em);
+  }
+  .mainContainer .container1.activeLeft.menuOpen {
+    transform: translate(19em);
+  }
+  .mainContainer .container1.activeRight {
+    transform: translateX(-15em);
+  }
+  .mainContainer .container1 header .tabsWrapper .tabs .tab .close {
+    opacity: 1;
+    visibility: visible;
+  }
+  .mainContainer .container1 .document::before {
+    display: none;
+  }
+  .mainContainer .container1 .document.active .edit {
+    max-width: initial;
+    min-width: initial;
+    width: 100%;
+  }
+  .mainContainer .container1 .document.active .preview {
+    display: none;
+  }
+  .mainContainer .container1 .document .guide {
+    width: 80%;
+  }
 }
 
 /*# sourceMappingURL=write.css.map */
