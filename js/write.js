@@ -1206,6 +1206,11 @@ const createFile = (e) => {
             addTab(title)
             checkTabs()
 
+            if (window.innerWidth <= 700) {
+                closeMenu()
+                handleLeftSwipe()
+            }
+
             e.preventDefault()
             textarea.focus()
         } else {
