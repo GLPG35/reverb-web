@@ -67,6 +67,14 @@ const checkPlatform = () => {
         {
             name: 'Linux',
             icon: 'fab fa-linux'
+        },
+        {
+            name: 'Android',
+            icon: 'fab fa-google-play'
+        },
+        {
+            name: 'iOS',
+            icon: 'fab fa-app-store-ios'
         }
     ]
 

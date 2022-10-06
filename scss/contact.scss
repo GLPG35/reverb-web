@@ -8,12 +8,12 @@
     .section1 {
         width: 50%;
         flex-direction: column;
-        gap: 2em;
         padding-block: 2em;
         padding-left: 5em;
 
         .title {
             font-size: 1.5em;
+            margin-bottom: 1em;
             
             h2 {
                 font-weight: 800;
@@ -101,7 +101,6 @@
 
         .subtitle {
             width: 70%;
-            margin-bottom: 2em;
 
             p {
                 font-size: 1.1em;

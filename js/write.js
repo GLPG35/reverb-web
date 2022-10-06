@@ -999,13 +999,14 @@ const viewFolder = () => {
     if (folder.classList.contains('active')) {
         document.querySelector('.files i').classList.replace('fa-folder-open', 'fa-folder')
         volumeIndicator.classList.remove('menuOpen')
+        document.querySelector('.container1').classList.remove('menuOpen')
     } else {
         document.querySelector('.files i').classList.replace('fa-folder', 'fa-folder-open')
         volumeIndicator.classList.add('menuOpen')
+        document.querySelector('.container1').classList.add('menuOpen')
     }
 
     folder.classList.toggle('active')
-    document.querySelector('.container1').classList.add('menuOpen')
 }
 
 const closeMenu = () => {
@@ -1163,6 +1164,17 @@ if (!themeList) {
     listThemes(themeList)
 } */
 
+class File {
+    constructor(uid, titleID) {
+        this.uid = uid
+        this.title = titleID
+        this.content = ''
+    }
+}
+
+const newFile = new File(uid, 'pene')
+console.log(newFile)
+
 const createFile = (e) => {
     const inputClass = e.target.classList.value
     let type
@@ -1189,11 +1201,7 @@ const createFile = (e) => {
         const title = e.target.value
         const notes = JSON.parse(localStorage.getItem('notes')) || []
 
-        const note = {
-            uid,
-            title,
-            content: ''
-        }
+        const note = new File(uid, title)
 
         const exist = notes.find(x => x.title == title)
 
