@@ -373,4 +373,21 @@ footer {
   color: var(--accent-color-hover);
 }
 
+@media (max-width: 700px) {
+  .container1 {
+    flex-direction: column;
+  }
+  .container1 .sidebar {
+    width: 100%;
+    flex-direction: row;
+    height: 4em;
+    min-height: initial;
+    padding: 0;
+    align-items: center;
+  }
+  .container1 .contents {
+    width: 100%;
+  }
+}
+
 /*# sourceMappingURL=about.css.map */

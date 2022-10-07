@@ -201,3 +201,22 @@
         }
     }
 }
+
+@media (max-width: 700px) {
+    .container1 {
+        flex-direction: column;
+
+        .sidebar {
+            width: 100%;
+            flex-direction: row;
+            height: 4em;
+            min-height: initial;
+            padding: 0;
+            align-items: center;
+        }
+
+        .contents {
+            width: 100%;
+        }
+    }    
+}

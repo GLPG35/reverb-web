@@ -1498,6 +1498,9 @@ body {
   .mainContainer .musicPlayer.activeLeft {
     transform: translateX(100%);
   }
+  .mainContainer .musicPlayer .musicList .list .spinnerContainer .spinnerWrapper {
+    width: 15em;
+  }
   .mainContainer .musicPlayer .musicList .list .item .delete {
     opacity: 1;
     visibility: visible;

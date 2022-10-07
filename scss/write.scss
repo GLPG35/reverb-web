@@ -1617,6 +1617,12 @@
 
             .musicList {
                 .list {
+                    .spinnerContainer {
+                        .spinnerWrapper {
+                            width: 15em;
+                        }
+                    }
+
                     .item {
                         .delete {
                             opacity: 1;
