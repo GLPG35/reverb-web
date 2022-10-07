@@ -1422,6 +1422,8 @@ const setMobileHeight = () => {
     }
 }
 
+setMobileHeight()
+
 window.addEventListener('resize', setMobileHeight)
 document.addEventListener('keydown', saveDocument)
 toggleViewButton.addEventListener('click', toggleView)
