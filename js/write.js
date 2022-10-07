@@ -1172,9 +1172,6 @@ class File {
     }
 }
 
-const newFile = new File(uid, 'pene')
-console.log(newFile)
-
 const createFile = (e) => {
     const inputClass = e.target.classList.value
     let type
@@ -1416,16 +1413,16 @@ const touchGestures = () => {
 }
 
 const setMobileHeight = () => {
-    document.querySelector('.mainContainer').style.height = `${window.innerHeight}px`
+    if (window.innerWidth <= 700) {
+        document.querySelector('.mainContainer').style.height = `${window.innerHeight}px`
+    } else {
+        if (document.querySelector('.mainContainer').hasAttribute('style')) {
+            document.querySelector('.mainContainer').removeAttribute('style')
+        }
+    }
 }
 
-const deviceWidth = window.matchMedia('(max-width: 700px)')
-
-if (deviceWidth.matches) {
-    window.addEventListener('resize', setMobileHeight)
-    setMobileHeight()
-}
-
+window.addEventListener('resize', setMobileHeight)
 document.addEventListener('keydown', saveDocument)
 toggleViewButton.addEventListener('click', toggleView)
 homeButton.addEventListener('click', () => location.href = '../')
