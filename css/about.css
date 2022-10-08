@@ -236,13 +236,18 @@ footer {
   height: max-content;
 }
 .container1 .sidebar .sections .section {
-  width: 100%;
+  flex-grow: 1;
   height: 3em;
   transition: 0.2s ease-out;
   display: flex;
   align-items: center;
   padding-left: 1.5em;
   user-select: none;
+  padding: 0;
+  justify-content: center;
+}
+.container1 .sidebar .sections .section i {
+  display: none;
 }
 .container1 .sidebar .sections .section:hover {
   background-color: var(--menu-hover);
@@ -384,9 +389,40 @@ footer {
     min-height: initial;
     padding: 0;
     align-items: center;
+    border-radius: 0;
+  }
+  .container1 .sidebar .title {
+    display: none;
+  }
+  .container1 .sidebar .sections {
+    flex-direction: row;
+    height: 100%;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .container1 .sidebar .sections .section {
+    height: 100%;
+  }
+  .container1 .sidebar .sections .section i {
+    display: initial;
+  }
+  .container1 .sidebar .sections .section span {
+    display: none;
   }
   .container1 .contents {
     width: 100%;
+  }
+  .container1 .contents .me .content .profile {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10em, 1fr));
+    grid-auto-rows: max-content;
+    place-items: center;
+  }
+  .container1 .contents .me .content .profile .info {
+    text-align: center;
+  }
+  .container1 .contents .me .content .profile .info .socials {
+    justify-content: center;
   }
 }
 

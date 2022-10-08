@@ -31,13 +31,19 @@
             height: max-content;
             
             .section {
-                width: 100%;
+                flex-grow: 1;
                 height: 3em;
                 transition: 0.2s ease-out;
                 display: flex;
                 align-items: center;
                 padding-left: 1.5em;
                 user-select: none;
+                padding: 0;
+                justify-content: center;
+
+                i {
+                    display: none;
+                }
 
                 &:hover {
                     background-color: var(--menu-hover);
@@ -213,10 +219,53 @@
             min-height: initial;
             padding: 0;
             align-items: center;
+            border-radius: 0;
+
+            .title {
+                display: none;
+            }
+
+            .sections {
+                flex-direction: row;
+                height: 100%;
+                justify-content: space-around;
+                align-items: center;
+
+                .section {
+                    height: 100%;
+
+                    i {
+                        display: initial;
+                    }
+
+                    span {
+                        display: none;
+                    }
+                }
+            }
         }
 
         .contents {
             width: 100%;
+
+            .me {
+                .content {
+                    .profile {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(10em, 1fr));
+                        grid-auto-rows: max-content;
+                        place-items: center;
+
+                        .info {
+                            text-align: center;
+
+                            .socials {
+                                justify-content: center;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }    
 }
