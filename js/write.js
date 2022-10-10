@@ -1499,6 +1499,8 @@ disc.addEventListener('touchstart', e => {
     discTouchY = e.changedTouches[0].screenY
 })
 disc.addEventListener('touchmove', e => {
+    e.preventDefault()
+
     discMoveX = e.changedTouches[0].screenX
     discMoveY = e.changedTouches[0].screenY
     swipeVolume()
