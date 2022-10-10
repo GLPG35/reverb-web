@@ -1424,6 +1424,32 @@ const setMobileHeight = () => {
 
 setMobileHeight()
 
+let discTouchX = 0
+let discTouchY = 0
+let discMoveX = 0
+let discMoveY = 0
+
+const swipeVolume = () => {
+    const diffX = discTouchX - discMoveX
+    const diffY = discTouchY - discMoveY
+
+    const manageVolume = (direction) => {
+        const currentAudio = document.querySelector('audio')
+
+        if (direction) {
+            currentAudio.volume = currentAudio.volume != 1.0 ? Math.round((currentAudio.volume + 0.01) * 100) / 100 : 1
+        } else {
+            currentAudio.volume = currentAudio.volume != 0.0 ? Math.round((currentAudio.volume - 0.01) * 100) / 100 : 0
+        }
+
+        showVolume()
+    }
+
+    if (Math.abs(diffY) > Math.abs(diffX)) {
+        manageVolume(discMoveY < discTouchY)
+    }
+}
+
 window.addEventListener('resize', setMobileHeight)
 document.addEventListener('keydown', saveDocument)
 toggleViewButton.addEventListener('click', toggleView)
@@ -1467,4 +1493,13 @@ rDocument.addEventListener('touchend', e => {
     touchEndX = e.changedTouches[0].screenX
     touchEndY = e.changedTouches[0].screenY
     touchGestures()
+})
+disc.addEventListener('touchstart', e => {
+    discTouchX = e.changedTouches[0].screenX
+    discTouchY = e.changedTouches[0].screenY
+})
+disc.addEventListener('touchmove', e => {
+    discMoveX = e.changedTouches[0].screenX
+    discMoveY = e.changedTouches[0].screenY
+    swipeVolume()
 })
