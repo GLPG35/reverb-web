@@ -243,8 +243,6 @@ footer {
   align-items: center;
   padding-left: 1.5em;
   user-select: none;
-  padding: 0;
-  justify-content: center;
 }
 .container1 .sidebar .sections .section i {
   display: none;
@@ -402,6 +400,8 @@ footer {
   }
   .container1 .sidebar .sections .section {
     height: 100%;
+    padding: 0;
+    justify-content: center;
   }
   .container1 .sidebar .sections .section i {
     display: initial;

@@ -38,8 +38,6 @@
                 align-items: center;
                 padding-left: 1.5em;
                 user-select: none;
-                padding: 0;
-                justify-content: center;
 
                 i {
                     display: none;
@@ -233,6 +231,8 @@
 
                 .section {
                     height: 100%;
+                    padding: 0;
+                    justify-content: center;
 
                     i {
                         display: initial;
