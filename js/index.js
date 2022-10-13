@@ -54,7 +54,7 @@ const checkTheme = () => {
 checkTheme()
 
 const checkPlatform = () => {
-    const platform = navigator.userAgentData.platform
+    const platform = navigator.userAgentData?.platform
     const platformList = [
         {
             name: 'Windows',
